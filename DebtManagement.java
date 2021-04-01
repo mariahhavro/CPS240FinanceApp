@@ -44,7 +44,7 @@ public class DebtManagement {
 			// Check for more Loans, if not end loop by setting boolean moreLoans to false
 			System.out.println("Do you have another loan/debt to enter? (Yes/No)");
 			anotherLoan = sc.next();
-			if (anotherLoan.equals("No") || anotherLoan.equals("no") || anotherLoan.equals("NO")) {
+			if (anotherLoan.equalsIgnoreCase("No")){
 				moreLoans = false;
 			}
 		}
