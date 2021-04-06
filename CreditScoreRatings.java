@@ -3,8 +3,126 @@
  * @author Jacob Mackowiak
  *
  */
-public class CreditScoreRatings {
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
 
+public class CreditScoreRatings extends JFrame {
+
+	private JSlider jslcreditAccounts = new JSlider(0, 15, 0);
+	private JSlider jslavailableCredit = new JSlider(0, 70, 0);
+	private JSlider jslcreditLength = new JSlider(0,100,0);
+	private JSlider jslpercentCreditUsed = new JSlider(0,100,0);
+	private JSlider jslrecentInquiries = new JSlider(0,10,0);
+	private JSlider jslpercentOnTimePayments = new JSlider(0,100,0);
+	private JSlider jslcreditScore = new JSlider(300,850,300);
+
+	private JTextField jtfcreditAccountsRating = new JTextField();
+	private JTextField jtfavailableCreditRaing = new JTextField();
+	private JTextField jtfcreditLengthRating = new JTextField();
+	private JTextField jtfpercentCreditUsedRating = new JTextField();
+	private JTextField jtfrecentInquiriesRating = new JTextField();
+	private JTextField jtfpercentOnTimePaymentsRating = new JTextField();
+	private JTextField jtfcreditScoreRating = new JTextField();
+
+
+	public CreditScoreRatings() {
+
+		jtfcreditAccountsRating.setEditable(false);
+		jtfavailableCreditRaing.setEditable(false);
+		jtfcreditLengthRating.setEditable(false);
+		jtfpercentCreditUsedRating.setEditable(false);
+		jtfrecentInquiriesRating.setEditable(false);
+		jtfpercentOnTimePaymentsRating.setEditable(false);
+		jtfcreditScoreRating.setEditable(false);
+
+		setSliderTicMarks(jslcreditAccounts, jslavailableCredit, jslcreditLength, 
+			jslpercentCreditUsed, jslrecentInquiries, jslpercentOnTimePayments, jslcreditScore);
+
+		JPanel p1 = new JPanel(new GridLayout(7, 3));
+		p1.add(new JLabel("Credit Accounts"));
+		p1.add(jslcreditAccounts);
+		p1.add(new JLabel("Rating:"));
+		p1.add(jtfcreditAccountsRating);
+		p1.add(new JLabel("Available Credit (x10^3)"));
+		p1.add(jslavailableCredit);
+		p1.add(new JLabel("Rating:"));
+		p1.add(jtfavailableCreditRaing);
+		p1.add(new JLabel("Credit Length"));
+		p1.add(jslcreditLength);
+		p1.add(new JLabel("Rating:"));
+		p1.add(jtfcreditLengthRating);
+		p1.add(new JLabel("Credit Used (%)"));
+		p1.add(jslpercentCreditUsed );
+		p1.add(new JLabel("Rating:"));
+		p1.add(jtfpercentCreditUsedRating);
+		p1.add(new JLabel("Recent Inquriries"));
+		p1.add(jslrecentInquiries );
+		p1.add(new JLabel("Rating:"));
+		p1.add(jtfrecentInquiriesRating);
+		p1.add(new JLabel("On time payments (%)"));
+		p1.add(jslpercentOnTimePayments);
+		p1.add(new JLabel("Rating:"));
+		p1.add(jtfpercentOnTimePaymentsRating);
+		p1.add(new JLabel("Credit Score"));
+		p1.add(jslcreditScore);
+		p1.add(new JLabel("Rating:"));
+		p1.add(jtfcreditScoreRating);
+		p1.setBorder(new TitledBorder("Enter credit score factors"));
+
+
+
+		add(p1, BorderLayout.CENTER);
+
+		// get the frame ready
+		setTitle("Credit Score Ratings");
+		setLocationRelativeTo(null); // center the frame
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(600, 400);
+		setVisible(true);
+
+	}
+
+
+	public static void setSliderTicMarks(JSlider jslcreditAccounts, JSlider jslavailableCredit, JSlider jslcreditLength, 
+			JSlider jslpercentCreditUsed, JSlider jslrecentInquiries, JSlider jslpercentOnTimePayments, JSlider jslcreditScore) {
+		jslcreditAccounts.setMajorTickSpacing(5);
+		jslcreditAccounts.setMinorTickSpacing(1);
+		jslcreditAccounts.setPaintTicks(true);
+		jslcreditAccounts.setPaintLabels(true);
+
+		jslavailableCredit.setMajorTickSpacing(10);
+		jslavailableCredit.setMinorTickSpacing(5);
+		jslavailableCredit.setPaintTicks(true);
+		jslavailableCredit.setPaintLabels(true);
+
+		jslcreditLength.setMajorTickSpacing(50);
+		jslcreditLength.setMinorTickSpacing(10);
+		jslcreditLength.setPaintTicks(true);
+		jslcreditLength.setPaintLabels(true);
+
+		jslpercentCreditUsed.setMajorTickSpacing(50);
+		jslpercentCreditUsed.setMinorTickSpacing(10);
+		jslpercentCreditUsed.setPaintTicks(true);
+		jslpercentCreditUsed.setPaintLabels(true);
+
+		jslrecentInquiries.setMajorTickSpacing(5);
+		jslrecentInquiries.setMinorTickSpacing(1);
+		jslrecentInquiries.setPaintTicks(true);
+		jslrecentInquiries.setPaintLabels(true);
+
+		jslpercentOnTimePayments.setMajorTickSpacing(50);
+		jslpercentOnTimePayments.setMinorTickSpacing(10);
+		jslpercentOnTimePayments.setPaintTicks(true);
+		jslpercentOnTimePayments.setPaintLabels(true);
+
+		jslcreditScore.setMajorTickSpacing(125);
+		jslcreditScore.setMinorTickSpacing(100);
+		jslcreditScore.setPaintTicks(true);
+		jslcreditScore.setPaintLabels(true);
+
+	}
 	/**
 	 * This method gives suggestions to improve credit score using various factors
 	 * @param creditAccounts
@@ -134,18 +252,10 @@ public class CreditScoreRatings {
 		}
 
 	}
-// this main function is just for testing purposes
-//	public static void main(String [] args) {
-//
-//		try{
-//			String creditScore = showCreditScoreRating(500);
-//			System.out.println(creditScore);
-//		}
-//		catch(CreditScoreException CSE) {
-//			System.out.println(CSE);
-//		}
-//		System.out.println();
-//		String credit = creditImprovements(7,2500,5,5,5,5);
-//		System.out.print(credit);
-//	}
+	
+	public static void main(String [] args) {
+
+		JFrame frame = new CreditScoreRatings();
+		
+	}
 }
