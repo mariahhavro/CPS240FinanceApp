@@ -2,15 +2,49 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class DebtManagement {
-	ArrayList<LoanCalc> loans = new ArrayList<LoanCalc>();
 
-	// have user enter all loans (uses LoanCalc) creates a list of loans
+	public class Debt {
+		String name;
+		double principle;
+		double monthlyPayment;
+		double presentValue;
+		double rate;
+
+		public Debt() {
+			name = "";
+			principle = 0.0;
+			monthlyPayment = 0.0;
+			presentValue = 0.0;
+			rate = 0.0;
+		}
+
+		public Debt(String name, double principle, double monthlyPayment, double presentValue, double rate) {
+			super();
+			this.name = name;
+			this.principle = principle;
+			this.monthlyPayment = monthlyPayment;
+			this.presentValue = presentValue;
+			this.rate = rate;
+		}
+
+		public double getPresentValue() {
+			return presentValue;
+		}
+
+		public double getRate() {
+			return rate;
+		}
+	}
+
+	ArrayList<Debt> debts = new ArrayList<Debt>();
+
+	// have user enter all loans (uses debt) creates a list of loans
 	public void getLoans() {
 		Scanner sc = new Scanner(System.in); // scanner
 
 		boolean moreLoans = true;// used to determine whether to ask for another loan
 
-		// values to ask for from user to create loanCalc for list of loans
+		// values to ask for from user to create debt for list of loans
 		String name = "";
 		double principle = 0.0;
 		double monthlyPayment = 0.0;
@@ -18,7 +52,7 @@ public class DebtManagement {
 		double rate = 0.0;
 		String anotherLoan = "";
 
-		// loops until users replies "No" to last question, creates a new LoanCalc and
+		// loops until users replies "No" to last question, creates a new debt and
 		// adds to list each iteration
 		while (moreLoans) {
 			// get constructor items of LoanCalc
@@ -38,8 +72,8 @@ public class DebtManagement {
 			System.out.println("Rate: ");
 			rate = sc.nextDouble();
 
-			// Create LoanCalc and add to ArrayList
-			loans.add(new LoanCalc(name, principle, monthlyPayment, presentValue, rate));
+			// Create debt and add to ArrayList
+			debts.add(new Debt(name, principle, monthlyPayment, presentValue, rate));
 
 			// Check for more Loans, if not end loop by setting boolean moreLoans to false
 			System.out.println("Do you have another loan/debt to enter? (Yes/No)");
@@ -58,11 +92,11 @@ public class DebtManagement {
 		double extremeRate = 40.0;
 
 		// Add up total loan values
-		for (int i = 0; i < loans.size(); i++) {
-			totalDebt += loans.getPresentValue();
-			sumRate += loans.getRate();
+		for (int i = 0; i < debts.size(); i++) {
+			totalDebt += debts.get(i).getPresentValue();
+			sumRate += debts.get(i).getRate();
 		}
-		averageRate = totalRate / loans.size();
+		averageRate = sumRate / debts.size();
 
 		if (totalDebt >= extremeDebt) {
 			// recommend change i.e. bankruptcy, consolidation
@@ -75,26 +109,26 @@ public class DebtManagement {
 
 	// determine two methods of paying off loans, smallest debts first, or highest
 	// rate first. Returns list
-	public ArrayList<LoanCalc> determineDebtPaymentPlan() {
-		//intialize lists to be returned, will only return one.
-		ArrayList<LoanCalc> loansByRate = loans;
-		ArrayList<LoanCalc> loansByDebt = loans;
-		
+	public ArrayList<Debt> determineDebtPaymentPlan() {
+		// intialize lists to be returned, will only return one.
+		ArrayList<Debt> loansByRate = debts;
+		ArrayList<Debt> loansByDebt = debts;
+
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Do you want to pay off by highest rate or smallest debt? (Debt/Rate)?");
 		String method = sc.next();
-		
-		//Sort by smallest debts using selection sort, return that ordered list
+
+		// Sort by smallest debts using selection sort, return that ordered list
 		if (method.equals("Debt") || method.equals("debt") || method.equals("DEBT")) {
-			for(int i = 0; i < loansByDebt.size()-1; i++) {
+			for (int i = 0; i < loansByDebt.size() - 1; i++) {
 				int minIndex = i;
-				for(int j = i + 1; j < loansByDebt.size(); j++) {
-					if((loansByDebt.get(j)).getPresentValue() < (loansByDebt.get(minIndex)).getPresentValue()) {
+				for (int j = i + 1; j < loansByDebt.size(); j++) {
+					if ((loansByDebt.get(j)).getPresentValue() < (loansByDebt.get(minIndex)).getPresentValue()) {
 						minIndex = j;
 					}
 				}
-				if(minIndex != i) {
-					LoanCalc temp = new LoanCalc(); //temporary variable for swapping
+				if (minIndex != i) {
+					Debt temp = new Debt(); // temporary variable for swapping
 					temp = loansByDebt.get(minIndex);
 					loansByDebt.set(minIndex, loansByDebt.get(i));
 					loansByDebt.set(i, temp);
@@ -102,23 +136,26 @@ public class DebtManagement {
 			}
 			return loansByDebt;
 		}
-		//Sort by highest rates using selection sort, return that ordered list
-		if (method.equals("Rate") || method.equals("rate") || method.equals("RATE")) {
-			for(int i = 0; i < loansByRate.size()-1; i++) {
+		// Sort by highest rates using selection sort, return that ordered list
+		else if (method.equals("Rate") || method.equals("rate") || method.equals("RATE")) {
+			for (int i = 0; i < loansByRate.size() - 1; i++) {
 				int minIndex = i;
-				for(int j = i + 1; j < loansByRate.size(); j++) {
-					if((loansByRate.get(j)).getRate() < (loansByRate.get(minIndex)).getRate()) {
+				for (int j = i + 1; j < loansByRate.size(); j++) {
+					if ((loansByRate.get(j)).getRate() < (loansByRate.get(minIndex)).getRate()) {
 						minIndex = j;
 					}
 				}
-				if(minIndex != i) {
-					LoanCalc temp = new LoanCalc(); //temporary variable for swapping
+				if (minIndex != i) {
+					Debt temp = new Debt(); // temporary variable for swapping
 					temp = loansByRate.get(minIndex);
 					loansByRate.set(minIndex, loansByRate.get(i));
 					loansByRate.set(i, temp);
 				}
 			}
 			return loansByRate;
+		}
+		else {
+			return loansByRate; //have an error message to choose one
 		}
 	}
 
