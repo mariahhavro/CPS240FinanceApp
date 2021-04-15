@@ -4,28 +4,28 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.border.*;
 
-public class CreditScoreSwing extends JFrame{
+public class CreditScoreSwing {
+	
+	
 
-	private JSlider jslcreditAccounts = new JSlider(0, 15, 0);
-	private JSlider jslavailableCredit = new JSlider(0, 70000, 0);
-	private JSlider jslcreditLength = new JSlider(0,100,0);
-	private JSlider jslpercentCreditUsed = new JSlider(0,100,0);
-	private JSlider jslrecentInquiries = new JSlider(0,10,0);
-	private JSlider jslpercentOnTimePayments = new JSlider(0,100,0);
-	private JSlider jslcreditScore = new JSlider(300,850,300);
+	public static JComponent CreditScoreTab() {
+		
+		JSlider jslcreditAccounts = new JSlider(0, 15, 0);
+		JSlider jslavailableCredit = new JSlider(0, 70000, 0);
+		JSlider jslcreditLength = new JSlider(0,100,0);
+		JSlider jslpercentCreditUsed = new JSlider(0,100,0);
+		JSlider jslrecentInquiries = new JSlider(0,10,0);
+		JSlider jslpercentOnTimePayments = new JSlider(0,100,0);
+		JSlider jslcreditScore = new JSlider(300,850,300);
 
-	private JTextField jtfcreditAccountsRating = new JTextField();
-	private JTextField jtfavailableCreditRating = new JTextField();
-	private JTextField jtfcreditLengthRating = new JTextField();
-	private JTextField jtfpercentCreditUsedRating = new JTextField();
-	private JTextField jtfrecentInquiriesRating = new JTextField();
-	private JTextField jtfpercentOnTimePaymentsRating = new JTextField();
-	private JTextField jtfcreditScoreRating = new JTextField();
+		JTextField jtfcreditAccountsRating = new JTextField();
+		JTextField jtfavailableCreditRating = new JTextField();
+		JTextField jtfcreditLengthRating = new JTextField();
+		JTextField jtfpercentCreditUsedRating = new JTextField();
+		JTextField jtfrecentInquiriesRating = new JTextField();
+		JTextField jtfpercentOnTimePaymentsRating = new JTextField();
+		JTextField jtfcreditScoreRating = new JTextField();
 
-	private JButton mainMenu = new JButton("Main Menu");
-
-
-	public CreditScoreSwing() {
 
 		jtfcreditAccountsRating.setEditable(false);
 		jtfavailableCreditRating.setEditable(false);
@@ -37,7 +37,7 @@ public class CreditScoreSwing extends JFrame{
 
 		setSliderTicMarks(jslcreditAccounts, jslavailableCredit, jslcreditLength, 
 				jslpercentCreditUsed, jslrecentInquiries, jslpercentOnTimePayments, jslcreditScore);
-
+		JPanel panel = new JPanel(new BorderLayout());
 		JPanel p1 = new JPanel(new GridLayout(7, 3));
 		p1.add(new JLabel("Credit Accounts"));
 		p1.add(jslcreditAccounts);
@@ -156,15 +156,7 @@ public class CreditScoreSwing extends JFrame{
 			}
 		});
 
-		add(p1, BorderLayout.CENTER);
-		add(mainMenu, BorderLayout.SOUTH);
-
-		// get the frame ready
-		setTitle("Credit Score Ratings");
-		setLocationRelativeTo(null); // center the frame
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(600, 400);
-		setVisible(true);
+		return p1;
 
 	}
 	
@@ -204,12 +196,14 @@ public class CreditScoreSwing extends JFrame{
 		jslcreditScore.setMinorTickSpacing(100);
 		jslcreditScore.setPaintTicks(true);
 		jslcreditScore.setPaintLabels(true);
+		
+
 
 	}
 	
 	public static void main(String [] args) {
 
-		JFrame frame = new CreditScoreSwing();
+		//JFrame frame = new CreditScoreSwing();
 
 	}
 
