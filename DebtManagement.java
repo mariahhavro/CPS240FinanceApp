@@ -10,7 +10,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.*;
 
-public class DebtManagementSwing extends JFrame {
+public class DebtManagement extends JFrame {
 	ArrayList<Debt> debts = new ArrayList<Debt>();
 	ArrayList<Debt> orderedDebts = new ArrayList<Debt>();
 	CardLayout card;
@@ -31,7 +31,7 @@ public class DebtManagementSwing extends JFrame {
 	double totalDebt = 0.0;
 	double averageRate = 0.0;
 
-	public DebtManagementSwing() {
+	public DebtManagement() {
 
 		// Create a welcome panel (shown first on default)
 		JPanel welcomeMenuPanel = new JPanel(new BorderLayout(5, 10));
