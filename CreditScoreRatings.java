@@ -1,7 +1,8 @@
 /**
  * This class will give various credit score ratings based on credit score factors 
  * @author Jacob Mackowiak
- *
+ *Changes to make: Change the methods to individual methods for credit score factors, add main menu button,
+ * finish lambdas
  */
 
 public class CreditScoreRatings  {
