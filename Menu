@@ -15,26 +15,40 @@ import java.awt.event.*;
 
 public class Menu extends JFrame {
 
-	
+
 	CardLayout menuCard;
 	JPanel menuCardPanel;
 	JButton loginButton = new JButton("Login");
 	JButton jbtcreateAccount = new JButton("Create Account");
 	JButton jbtNewAccount= new JButton("Create Account");
 	JButton jbtlogOut = new JButton ("Log out");
-	
+	JTextField newUserName = new JTextField();
+	JTextField newPassword = new JTextField();
+	JTextField loginUserName = new JTextField();
+	JTextField loginPassword = new JTextField();
+	JTextField invalidLogin = new JTextField(7);
+	private ArrayList<User> users = new ArrayList<User>();
+
 	public Menu() {
 		JTabbedPane menuTabbedPane = new JTabbedPane();
+		invalidLogin.setEditable(false);
 		
+		//set colors
+		
+
 		//create login page
 		JComponent loginPage = createLoginPage();
 		JComponent createAccountPage = createAccountPage();
-		
+
 		//add different classes for app into the menu tabbed pane
-		
+
 		//add accounts tab
-		JComponent userAccounts = new JPanel();
-		menuTabbedPane.addTab("User Accounts", userAccounts);
+		JComponent bankAccounts = new JPanel();
+		menuTabbedPane.addTab("Bank Accounts", bankAccounts);
+		// add debt management tab
+		DebtManagement dm = new DebtManagement();
+		JComponent dmTab = dm.DebtManagement();
+		menuTabbedPane.addTab("Debt Management", dmTab);
 		//add loan calculator tab
 		SwingLoanCalc slc = new SwingLoanCalc();
 		JComponent loanCalc = slc.LoanCalcTab();
@@ -42,48 +56,65 @@ public class Menu extends JFrame {
 		// add credit score tab
 		JComponent creditScore = CreditScoreSwing.CreditScoreTab();
 		menuTabbedPane.addTab("Credit Score Ratings", creditScore);
-		// add debt management tab
-		JPanel dm = new JPanel();
-		menuTabbedPane.addTab("Debt Management", dm);
 		// add Log out tab
 		JComponent logOut = logOutPage(jbtlogOut);
 		menuTabbedPane.addTab("Log Out", logOut);
 
-		
+
 		//Create CardLayout
 		menuCard = new CardLayout();
 		menuCardPanel = new JPanel(menuCard);
 		menuCardPanel.add(loginPage, "Login");
-		menuCardPanel.add(menuTabbedPane, "Welcome"); //change this to tabbed pane, then add sign in pane
+		menuCardPanel.add(menuTabbedPane, "Welcome");
 		menuCardPanel.add(createAccountPage, " ");
-		
+
 		//Switch card when login button is pressed
 		loginButton.addActionListener(new ActionListener() { //change to name of button
 			public void actionPerformed(ActionEvent e) {
-				menuCard.show(menuCardPanel, "Welcome"); //change to set name of card/panel added
+
+				if(existingUser(users, loginUserName.getText(), loginPassword.getText())) {
+					loginUserName.setText("");
+					loginPassword.setText("");
+					menuCard.show(menuCardPanel, "Welcome"); 
+				}
+				else {
+					loginUserName.setText("");
+					loginPassword.setText("");
+					invalidLogin.setText("Invalid Login");
+				}
+
 			}
 		});
-		
+
 		//Switch card to create account when create account button is pressed
 		jbtcreateAccount.addActionListener(new ActionListener() { //change to name of button
 			public void actionPerformed(ActionEvent e) {
+
 				menuCard.show(menuCardPanel, " "); //change to set name of card/panel added
 			}
 		});
-		
+
 		// Go to tabbed pane after new account is created
 		jbtNewAccount.addActionListener(new ActionListener() { //change to name of button
 			public void actionPerformed(ActionEvent e) {
+				//create new user and add new User to new user list
+				User newUser = new User(newUserName.getText(), newPassword.getText());
+				users.add(newUser);
+				System.out.println("Username: " + newUser.getUsername());
+				System.out.println("Password: " + newUser.getPassword());
+				newUserName.setText("");
+				newPassword.setText("");
 				menuCard.show(menuCardPanel, "Welcome"); //change to set name of card/panel added
 			}
 		});
 		// Return to log in page when log out button is pressed
 		jbtlogOut.addActionListener(new ActionListener() { //change to name of button
 			public void actionPerformed(ActionEvent e) {
+				invalidLogin.setText("");
 				menuCard.show(menuCardPanel, "Login"); //change to set name of card/panel added
 			}
 		});
-		
+
 		// get the frame read
 		add(menuCardPanel);
 		setTitle("Cup O'Java Financial Institute");
@@ -95,88 +126,100 @@ public class Menu extends JFrame {
 
 
 	public JComponent createAccountPage() {
-		
+
 		JPanel loginPage = new JPanel();
 		loginPage.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 20));
 		JPanel loginGrid = new JPanel(new GridLayout(2,2));
-		
-		
+
+
 		JLabel createAccount = new JLabel("                     Create Account                   ");
 		createAccount.setFont(new Font("TimesRoman", Font.BOLD, 28));
 		createAccount.setHorizontalAlignment(SwingConstants.CENTER);
-		
+
 		JLabel jlbUserName = new JLabel("Username:      ");
 		jlbUserName.setFont(new Font("TimesRoman", Font.PLAIN, 20));
 		jlbUserName.setHorizontalAlignment(SwingConstants.RIGHT);
-		JTextField jtfUserName = new JTextField();
+
 		JLabel jlbPassword = new JLabel("Password:      ");
 		jlbPassword.setFont(new Font("TimesRoman", Font.PLAIN, 20));
 		jlbPassword.setHorizontalAlignment(SwingConstants.RIGHT);
-		JTextField jtfPassword = new JTextField();
-		
+
 		//add components
 		loginPage.add(createAccount);
 		loginGrid.add(jlbUserName);
-		loginGrid.add(jtfUserName);
+		loginGrid.add(newUserName);
 		loginGrid.add(jlbPassword);
-		loginGrid.add(jtfPassword);
+		loginGrid.add(newPassword);
 		loginPage.add(loginGrid);
 		loginPage.add(jbtNewAccount);
-		
+
 		return loginPage;
-		
 	}
 
 	public JComponent createLoginPage() {
-		
+
 		JPanel loginPage = new JPanel();
 		loginPage.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 20));
 		JPanel loginGrid = new JPanel(new GridLayout(2,2));
-		
-		
+
+
 		JLabel welcomeLabel = new JLabel("Welcome to the Cup O'Java Finance App!");
 		welcomeLabel.setFont(new Font("TimesRoman", Font.BOLD, 28));
 		welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		
+
 		JLabel jlbUserName = new JLabel("Username:      ");
 		jlbUserName.setFont(new Font("TimesRoman", Font.PLAIN, 20));
 		jlbUserName.setHorizontalAlignment(SwingConstants.RIGHT);
-		JTextField jtfUserName = new JTextField();
 		JLabel jlbPassword = new JLabel("Password:      ");
 		jlbPassword.setFont(new Font("TimesRoman", Font.PLAIN, 20));
 		jlbPassword.setHorizontalAlignment(SwingConstants.RIGHT);
-		JTextField jtfPassword = new JTextField();
-		
+
+
 		//add components
 		loginPage.add(welcomeLabel);
 		loginGrid.add(jlbUserName);
-		loginGrid.add(jtfUserName);
+		loginGrid.add(loginUserName);
 		loginGrid.add(jlbPassword);
-		loginGrid.add(jtfPassword);
+		loginGrid.add(loginPassword);
 		loginPage.add(loginGrid);
 		loginPage.add(loginButton);
-		
+		loginPage.add(invalidLogin);
+
 		JLabel jlbcreateAccount = new JLabel("            Don't have an account? Create one below!                  "); 
 		jlbcreateAccount.setFont(new Font("TimesRoman", Font.PLAIN, 22));
 		jlbcreateAccount.setHorizontalAlignment(SwingConstants.CENTER);
-		
+
 		loginPage.add(jlbcreateAccount);
 		loginPage.add(jbtcreateAccount);
+
+		loginPage.setBackground(new Color(252, 205, 53));
 		
 		return loginPage;
 	}
-	
+
 	public JComponent logOutPage(JButton jbtlogOut) {
-		
+
 		JPanel logOut = new JPanel();
-		
+
 		JLabel question = new JLabel("Click here to log out:");
-		
+
 		logOut.add(question);
 		logOut.add(jbtlogOut);
 		return logOut;
 	}
+
+	public static boolean existingUser(ArrayList<User> users, String username, String password) {
+		for(int i=0; i<users.size();i++) {
+			if(username.equals(users.get(i).getUsername()) && password.equals(users.get(i).getPassword())) {
+				return true;
+			}
+		}
+		return false;
+
+	}
 	public static void main(String[] args) {
+		
+		
 		JFrame frame = new Menu();
 
 	}
