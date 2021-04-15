@@ -10,7 +10,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.*;
 
-public class DebtManagement extends JFrame {
+public class DebtManagement{
 	ArrayList<Debt> debts = new ArrayList<Debt>();
 	ArrayList<Debt> orderedDebts = new ArrayList<Debt>();
 	CardLayout card;
@@ -31,7 +31,7 @@ public class DebtManagement extends JFrame {
 	double totalDebt = 0.0;
 	double averageRate = 0.0;
 
-	public DebtManagement() {
+	public JComponent DebtManagement() {
 
 		// Create a welcome panel (shown first on default)
 		JPanel welcomeMenuPanel = new JPanel(new BorderLayout(5, 10));
@@ -130,7 +130,7 @@ public class DebtManagement extends JFrame {
 		viewEditDebtsPanel.add(menuBtnGrid1, BorderLayout.SOUTH);
 		viewEditDebtsPanel.add(jbtEditDelete, BorderLayout.EAST);
 		viewEditDebtsPanel.add(jtaDebts, BorderLayout.CENTER);
-		
+
 		//Create a panel to add debts
 		JPanel addDebtPanel = new JPanel(new BorderLayout());
 		JLabel jlbAddDebtInstr = new JLabel("Please fill in the information below, then hit submit");
@@ -172,7 +172,7 @@ public class DebtManagement extends JFrame {
 		addGrid.add(jtfRate);
 		addDebtPanel.add(addGrid,BorderLayout.CENTER);
 
-		
+
 		//Create a panel to delete and edit debts
 		JPanel editDeleteDebtPanel = new JPanel(new BorderLayout());
 		JLabel jlbEditDeleteDebtInstr = new JLabel("Please fill in the information below, then hit submit");
@@ -255,7 +255,7 @@ public class DebtManagement extends JFrame {
 		editDeleteGrid.add(jlbRate2);
 		editDeleteGrid.add(jtfRate2);
 		editDeleteDebtPanel.add(editDeleteGrid,BorderLayout.CENTER);
-		
+
 		// Create a panel to determine debt actions
 		JPanel debtActionPanel = new JPanel(new BorderLayout());
 		JLabel jlbIncome = new JLabel("Please enter income and submit to recieve advise on extreme debt actions:");
@@ -308,7 +308,7 @@ public class DebtManagement extends JFrame {
 				for(int i = 0; i < orderedDebts.size(); i++) {
 					jtaOrderedDebts.append(orderedDebts.get(i) + "\n");
 				}
-				
+
 			}
 		});
 		debtPaymentsPanel.add(jrbGrid, BorderLayout.WEST);
@@ -323,12 +323,13 @@ public class DebtManagement extends JFrame {
 		cardPanel.add(addDebtPanel, "Add Debt");
 		cardPanel.add(editDeleteDebtPanel, "Edit/Delete Debt");
 
-		// add to frame
-		add(cardPanel);
-		setTitle("Debt Manager");
-		setLocationRelativeTo(null); // center the frame
-		setSize(320, 250);
-		setVisible(true);
+//		// add to frame
+//		add(cardPanel);
+//		setTitle("Debt Manager");
+//		setLocationRelativeTo(null); // center the frame
+//		setSize(320, 250);
+//		setVisible(true);
+		return cardPanel;
 	}
 
 	public class Debt {
@@ -356,107 +357,107 @@ public class DebtManagement extends JFrame {
 		public void setPresentValue(Double presentValue) {
 			this.presentValue = presentValue;
 		}
-		
+
 		public double getRate() {
 			return rate;
 		}
-		
+
 		public void setRate(Double rate) {
 			this.rate = rate;
 		}
-		
+
 		public String getName() {
 			return name;
 		}
-		
+
 		public void setName(String name) {
 			this.name = name;
 		}
-		
+
 		public String toString() {
 			return "Name: " + name + " | Amount Owed: " + presentValue + " | Interest Rate: " + rate;
 		}
 	}
-	
+
 	// determine two methods of paying off loans, smallest debts first, or highest
-		// rate first. Returns list
-		public ArrayList<Debt> determineDebtPaymentPlan() {
-			// initialize lists to be returned, will only return one.
-			ArrayList<Debt> loansByRate = debts;
-			ArrayList<Debt> loansByDebt = debts;
+	// rate first. Returns list
+	public ArrayList<Debt> determineDebtPaymentPlan() {
+		// initialize lists to be returned, will only return one.
+		ArrayList<Debt> loansByRate = debts;
+		ArrayList<Debt> loansByDebt = debts;
 
-			
 
-			// Sort by smallest debts using selection sort, return that ordered list
-			if (jrbRate.isSelected()) {
-				for (int i = 0; i < loansByDebt.size() - 1; i++) {
-					int minIndex = i;
-					for (int j = i + 1; j < loansByDebt.size(); j++) {
-						if ((loansByDebt.get(j)).getPresentValue() < (loansByDebt.get(minIndex)).getPresentValue()) {
-							minIndex = j;
-						}
-					}
-					if (minIndex != i) {
-						Debt temp = new Debt(); // temporary variable for swapping
-						temp = loansByDebt.get(minIndex);
-						loansByDebt.set(minIndex, loansByDebt.get(i));
-						loansByDebt.set(i, temp);
+
+		// Sort by smallest debts using selection sort, return that ordered list
+		if (jrbRate.isSelected()) {
+			for (int i = 0; i < loansByDebt.size() - 1; i++) {
+				int minIndex = i;
+				for (int j = i + 1; j < loansByDebt.size(); j++) {
+					if ((loansByDebt.get(j)).getPresentValue() < (loansByDebt.get(minIndex)).getPresentValue()) {
+						minIndex = j;
 					}
 				}
-				return loansByDebt;
+				if (minIndex != i) {
+					Debt temp = new Debt(); // temporary variable for swapping
+					temp = loansByDebt.get(minIndex);
+					loansByDebt.set(minIndex, loansByDebt.get(i));
+					loansByDebt.set(i, temp);
+				}
 			}
-			// Sort by highest rates using selection sort, return that ordered list
-			else if(jrbDebt.isSelected()) {
-				for (int i = 0; i < loansByRate.size() - 1; i++) {
-					int minIndex = i;
-					for (int j = i + 1; j < loansByRate.size(); j++) {
-						if ((loansByRate.get(j)).getRate() < (loansByRate.get(minIndex)).getRate()) {
-							minIndex = j;
-						}
-					}
-					if (minIndex != i) {
-						Debt temp = new Debt(); // temporary variable for swapping
-						temp = loansByRate.get(minIndex);
-						loansByRate.set(minIndex, loansByRate.get(i));
-						loansByRate.set(i, temp);
+			return loansByDebt;
+		}
+		// Sort by highest rates using selection sort, return that ordered list
+		else if(jrbDebt.isSelected()) {
+			for (int i = 0; i < loansByRate.size() - 1; i++) {
+				int minIndex = i;
+				for (int j = i + 1; j < loansByRate.size(); j++) {
+					if ((loansByRate.get(j)).getRate() < (loansByRate.get(minIndex)).getRate()) {
+						minIndex = j;
 					}
 				}
-				return loansByRate;
+				if (minIndex != i) {
+					Debt temp = new Debt(); // temporary variable for swapping
+					temp = loansByRate.get(minIndex);
+					loansByRate.set(minIndex, loansByRate.get(i));
+					loansByRate.set(i, temp);
+				}
 			}
-			else {
-				return loansByRate; //have an error message to choose one
-			}
+			return loansByRate;
 		}
-		
-		public String determineTotalDebtActions() {
-			double sumRate = 0.0;
-			double extremeDebtPerc = 0.46;
-			double extremeRate = 40.0;
-			
-
-			// Add up total loan values
-			for (int i = 0; i < debts.size(); i++) {
-				totalDebt += debts.get(i).getPresentValue();
-				sumRate += debts.get(i).getRate();
-			}
-			averageRate = sumRate / debts.size();
-
-			if (totalDebt >= income*extremeDebtPerc) {
-				return "Due to the high amount of total debt, it is recommended to look into filing for"
-						+ " Bankruptcy. This is recommended even further if you are in danger of foreclosure"
-						+ " or are begin harassed by bill collectors.";
-			}else if (averageRate >= extremeRate) {
-				return "Due to the high average rate of interest from all of your debt, it is recommended to look into getting"
-						+ " a consolidation loan. This is recommended even further if you are have very high monthly payments"
-						+ " on your current loans.";
-			}else {
-				return "With the current debts you have entered, it is not recommeneded for you to file for Bankruptcy"
-						+ " or get a consolidation loan.";
-			}
+		else {
+			return loansByRate; //have an error message to choose one
 		}
-	
+	}
+
+	public String determineTotalDebtActions() {
+		double sumRate = 0.0;
+		double extremeDebtPerc = 0.46;
+		double extremeRate = 40.0;
+
+
+		// Add up total loan values
+		for (int i = 0; i < debts.size(); i++) {
+			totalDebt += debts.get(i).getPresentValue();
+			sumRate += debts.get(i).getRate();
+		}
+		averageRate = sumRate / debts.size();
+
+		if (totalDebt >= income*extremeDebtPerc) {
+			return "Due to the high amount of total debt, it is recommended to look into filing for"
+					+ " Bankruptcy. This is recommended even further if you are in danger of foreclosure"
+					+ " or are begin harassed by bill collectors.";
+		}else if (averageRate >= extremeRate) {
+			return "Due to the high average rate of interest from all of your debt, it is recommended to look into getting"
+					+ " a consolidation loan. This is recommended even further if you are have very high monthly payments"
+					+ " on your current loans.";
+		}else {
+			return "With the current debts you have entered, it is not recommeneded for you to file for Bankruptcy"
+					+ " or get a consolidation loan.";
+		}
+	}
+
 	public static void main(String[] args) {
-		JFrame frame = new DebtManagementSwing(); 
+		//JFrame frame = new DebtManagement(); 
 
 	}
 
