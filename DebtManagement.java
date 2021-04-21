@@ -10,6 +10,29 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.*;
 
+/*
+ * 		Changes made by Patrick:
+ * 			- For some reason, eclipse did NOT like that the class Debt was in the file DebtManagement, and would not
+ * 			  let me use Debt objects in the User class, so I removed the debt class out of debt management and into its own Debt.java file
+ * 			  It would suggest to create an import statement, import DebtManagement.Debt; but it would't work when added. This was the solution
+ * 			  I found that worked, I know it's not great. Sorry for making such a big change to your code Mariah!!
+ * 			- A static User variable of the current user is called, so that when someone logs in from the menu, the current user is initialized as the
+ * 			  user profile of the user the successfully logged in. This allows for their profile information to be accessed
+ * 			- Local arraylist of debts is now defined when the view debts button action listen is called. It's initialized as the list of debts on the
+ * 			  arraylist of debts on the current user
+ * 			- Since the debtmanagement panel method is created in the menu program immediately, before the log in action can be completed
+ * 			  and therefore the current user profile cannot be established via login, the view menu will be blank if I try to load in the currentUser debts
+ * 			  when it is created. Therefore, I added to the action listener on the view debts button, loading the debts to the display when that button is pressed.
+ * 			- I also added to the debt menu button underneath the view debts screen, clearing the textfield when users leave the screen, to prevent from
+ * 			  the view screen filling up with duplicate messages
+ * 			- I also moved the textfield initialization up above the action listener for the view debt button, since I can't call it before it's been initialized
+ * 			- I also edited a little bit of the deleteDebt method, I was running into a few minor errors with the viewer after I deleted things so I just updated it
+ * 			  a little bit.
+ * 	
+ * 
+ * 
+ */
+
 public class DebtManagement{
 	ArrayList<Debt> debts = new ArrayList<Debt>();
 	ArrayList<Debt> orderedDebts = new ArrayList<Debt>();
@@ -30,8 +53,12 @@ public class DebtManagement{
 	double income = 0.0;
 	double totalDebt = 0.0;
 	double averageRate = 0.0;
+	
+	static User curr = new User();
 
 	public JComponent DebtManagement() {
+		
+		JTextArea jtaDebts = new JTextArea();
 
 		// Create a welcome panel (shown first on default)
 		JPanel welcomeMenuPanel = new JPanel(new BorderLayout(5, 10));
@@ -41,6 +68,13 @@ public class DebtManagement{
 		JButton jbtViewEdit = new JButton("View/Manage Debts");
 		jbtViewEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				debts = curr.getDebts();
+				
+				for (int x = 0; x < debts.size(); x++) {
+					jtaDebts.append(debts.get(x) + "\n");	
+				}
+				
 				card.show(cardPanel, "View/Edit");
 			}
 		});
@@ -76,6 +110,8 @@ public class DebtManagement{
 		menuBtnGrid1.add(jbtMainMenu1);
 		jbtDebtMenu1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				jtaDebts.setText("");
+				curr.setDebts(debts);
 				card.show(cardPanel, "Welcome");
 			}
 		});
@@ -123,7 +159,9 @@ public class DebtManagement{
 				jtfRate2.setText(Double.toString(debts.get(iter).getRate()));
 			}
 		});
-		JTextArea jtaDebts = new JTextArea();
+		
+		
+
 		jtaDebts.setEditable(false);
 		viewEditDebtsPanel.add(jlbViewEditInstr, BorderLayout.NORTH);
 		viewEditDebtsPanel.add(jbtAdd, BorderLayout.WEST);
@@ -233,10 +271,16 @@ public class DebtManagement{
 			public void actionPerformed(ActionEvent e) {
 				//remove from ArrayList Debts, then perform "Next" action
 				debts.remove(iter);
-				if(iter == debts.size() -1) {
-					iter = 0;
-				}else {
-					iter++;
+				if(iter != 0) {
+					iter--;
+				}
+				else if(debts.size() == 0) {
+					jtaDebts.setText("");
+					for(int i = 0; i < debts.size(); i++) {
+						jtaDebts.append(debts.get(i) + "\n");
+					}
+					card.show(cardPanel, "View/Edit");
+					return;
 				}
 				jtfName2.setText(debts.get(iter).getName());
 				jtfValue2.setText(Double.toString(debts.get(iter).getPresentValue()));
@@ -332,52 +376,7 @@ public class DebtManagement{
 		return cardPanel;
 	}
 
-	public class Debt {
-		String name;
-		double presentValue;
-		double rate;
-
-		public Debt() {
-			name = "";
-			presentValue = 0.0;
-			rate = 0.0;
-		}
-
-		public Debt(String name, double presentValue, double rate) {
-			super();
-			this.name = name;
-			this.presentValue = presentValue;
-			this.rate = rate;
-		}
-
-		public double getPresentValue() {
-			return presentValue;
-		}
-
-		public void setPresentValue(Double presentValue) {
-			this.presentValue = presentValue;
-		}
-
-		public double getRate() {
-			return rate;
-		}
-
-		public void setRate(Double rate) {
-			this.rate = rate;
-		}
-
-		public String getName() {
-			return name;
-		}
-
-		public void setName(String name) {
-			this.name = name;
-		}
-
-		public String toString() {
-			return "Name: " + name + " | Amount Owed: " + presentValue + " | Interest Rate: " + rate;
-		}
-	}
+	
 
 	// determine two methods of paying off loans, smallest debts first, or highest
 	// rate first. Returns list
@@ -388,7 +387,7 @@ public class DebtManagement{
 
 
 
-		// Sort by smallest debts using selection sort, return that ordered list
+		// Sort by smallest debts using selectiodebtst, return that ordered list
 		if (jrbRate.isSelected()) {
 			for (int i = 0; i < loansByDebt.size() - 1; i++) {
 				int minIndex = i;
