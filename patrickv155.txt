@@ -1,3 +1,6 @@
 patrickv155,12345678
-checking,1000038,0.76
-saving,1000045,500
+a,checking,1000038,0.76
+a,saving,1000045,500.0
+d,Bank of America,1350.0,1.05
+d,Chase Mortage,145000.0,1.2
+d,Subway Tab,500.0,1.23
