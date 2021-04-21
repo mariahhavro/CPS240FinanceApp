@@ -31,6 +31,8 @@ public class Menu extends JFrame {
 	JTextField invalidLogin = new JTextField(7);
 	private ArrayList<User> users = loadUsers();
 
+	User currentUser = new User();
+
 	public Menu() {
 		JTabbedPane menuTabbedPane = new JTabbedPane();
 		invalidLogin.setEditable(false);
@@ -77,9 +79,12 @@ public class Menu extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				if(existingUser(users, loginUserName.getText(), loginPassword.getText())) {
+					currentUser = userFind(loginUserName.getText(), loginPassword.getText());
+					dm.curr = currentUser;
 					loginUserName.setText("");
 					loginPassword.setText("");
 					menuCard.show(menuCardPanel, "Welcome"); 
+					
 				}
 				else {
 					loginUserName.setText("");
@@ -140,6 +145,7 @@ public class Menu extends JFrame {
 		// Return to log in page when log out button is pressed
 		jbtlogOut.addActionListener(new ActionListener() { //change to name of button
 			public void actionPerformed(ActionEvent e) {
+				currentUser.saveUserFile();
 				invalidLogin.setText("");
 				menuCard.show(menuCardPanel, "Login"); //change to set name of card/panel added
 			}
@@ -196,8 +202,11 @@ public class Menu extends JFrame {
 						users.add(new User(tokens[0], tokens[1]));
 					}
 					// Otherwise, read in the account data and add that account to the users account that was loaded in from the first line
-					else {
-						users.get(i).addAccounts(tokens[0], tokens[1], Double.parseDouble(tokens[2]));
+					else if (tokens[0].contentEquals("a")){
+						users.get(i).addAccounts(tokens[1], tokens[2], Double.parseDouble(tokens[3]));
+					}
+					else if (tokens[0].contentEquals("d")) {
+						users.get(i).addDebts(tokens[1], Double.parseDouble(tokens[2]), Double.parseDouble(tokens[3]));
 					}
 					
 					// Increase the line count in file by one
@@ -311,6 +320,26 @@ public class Menu extends JFrame {
 		return false;
 
 	}
+	
+	public User userFind(String username, String password) {
+		
+		User curr = new User();
+		
+		for(int i=0; i<users.size();i++) {
+			
+			if(username.equals(users.get(i).getUsername()) && password.equals(users.get(i).getPassword())) {
+				
+				curr = users.get(i);
+				
+			}
+		}
+		
+		//System.out.println(curr.getUsername());
+		
+		return curr;
+		
+	}
+	
 	public static void main(String[] args) {
 		
 		
