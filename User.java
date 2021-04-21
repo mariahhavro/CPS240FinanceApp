@@ -1,26 +1,9 @@
-import java.util.ArrayList;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.Math;
-/*
- *  
-User Class 
-String userName // have an error come up if not unique 
-String password //encrypt  
-Accounts userAccounts[] //to hold account IDs of user accounts, arrayLists 
-LoanCalc loanCalc//have arraylist to hold past loan calculations, make function to 	display, edit and delete 
-savingCalc loanCalc// have arraylist to hold past loan calculations, make function to 	display, edit and delete 
+import java.util.ArrayList;
 
 
-Constructor 
-	automatically creates checking account 
-	can add more later 
-	use unique ID number to be realistic 8 digits, else just use 4 digits 
-Function to add accounts 
-//possibly add admit option later, use gui to send to different class log in 
-can see lists of all users, accounts, balances, etc 
- */
 
 /*
 
@@ -32,6 +15,9 @@ can see lists of all users, accounts, balances, etc
 		  and write the username and password information to it.
 		- Added saveUserFile method. This method is not called anywhere yet, but is intended to be the way we will overwrite old files and
 		  save the new information, when transfers are done and etc. This can be called in methods for those transactions.
+		- Added an arraylist to hold the debts each user may have, in order to save them to files and load them properly
+		- Added an addDebt method to add debts to the users profile 
+		- Added default constructor
 
 */
 public class User {
@@ -40,13 +26,25 @@ public class User {
 	private ArrayList<Account> userAccounts; //to hold account IDs of user accounts, arrayLists 
 	private ArrayList<Double> LoanCalculations;
 	private ArrayList<Double> SavingCalculations;
+	
+	private ArrayList<Debt> debts; // to hold account debts that users have added
 
+	User(){
+		userName = "";
+		password = "";
+		userAccounts = new ArrayList<Account>();
+		LoanCalculations = new ArrayList<Double>();
+		SavingCalculations = new ArrayList<Double>();
+		debts = new ArrayList<Debt>();
+	}
+	
 	User(String user, String pass){
 		userName = user;
 		password = pass;
 		userAccounts = new ArrayList<Account>();
 		LoanCalculations = new ArrayList<Double>();
 		SavingCalculations = new ArrayList<Double>();
+		debts = new ArrayList<Debt>();
 
 	}
 	
@@ -56,6 +54,7 @@ public class User {
 		userAccounts = accs;
 		LoanCalculations = new ArrayList<Double>();
 		SavingCalculations = new ArrayList<Double>();
+		debts = new ArrayList<Debt>();
 
 	}
 
@@ -78,6 +77,23 @@ public class User {
 	public void addAccounts(String name, String id, double balance) {
 		Account a = new Account(name, id, balance);
 		userAccounts.add(a);
+	}
+	
+	public void addDebts(Debt d) {
+		debts.add(d);
+	}
+	
+	public void addDebts(String name, double owed, double inter) {
+		Debt d = new Debt(name, owed, inter);
+		debts.add(d);
+	}
+	
+	public ArrayList<Debt> getDebts(){
+		return debts;
+	}
+	
+	public void setDebts(ArrayList<Debt> d) {
+		debts = d;
 	}
 	
 	public String getUsername() {
@@ -105,7 +121,13 @@ public class User {
 			for (int i = 0; i < this.userAccounts.size(); i++) {
 				
 				// Write the information for each account in each subsequent line of the file
-				myWriter.write("\n" + this.userAccounts.get(i).name + "," + this.userAccounts.get(i).accName + "," + this.userAccounts.get(i).balance);
+				myWriter.write("\na," + this.userAccounts.get(i).name + "," + this.userAccounts.get(i).accName + "," + this.userAccounts.get(i).balance);
+				
+			}
+			for (int i = 0; i < this.debts.size(); i++) {
+				
+				// Write the information for each account in each subsequent line of the file
+				myWriter.write("\nd," + this.debts.get(i).name + "," + this.debts.get(i).presentValue + "," + this.debts.get(i).rate);
 				
 			}
 			
@@ -147,5 +169,7 @@ public class User {
 		}
 		
 	}
+
+
 
 }
