@@ -137,6 +137,8 @@ public class Menu extends JFrame {
 					users.add(newUser);
 					//create new user .txt file
 					newUser.newUserFile();
+					// Change the current user to the new user profile
+					currentUser = newUser;
 					//change to set name of card/panel added
 					menuCard.show(menuCardPanel, "Welcome");				
 					
