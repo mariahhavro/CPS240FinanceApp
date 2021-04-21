@@ -69,6 +69,8 @@ public class DebtManagement{
 		jbtViewEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				jtaDebts.setText("");
+				
 				debts = curr.getDebts();
 				
 				for (int x = 0; x < debts.size(); x++) {
