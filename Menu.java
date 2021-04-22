@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.*;
+import javax.swing.border.*;
 import javax.swing.border.TitledBorder;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -25,10 +26,15 @@ public class Menu extends JFrame {
 	JButton jbtNewAccount= new JButton("Create Account");
 	JButton jbtlogOut = new JButton ("Log out");
 	JTextField newUserName = new JTextField();
-	JTextField newPassword = new JTextField();
+	JPasswordField newPassword = new JPasswordField();
 	JTextField loginUserName = new JTextField();
-	JTextField loginPassword = new JTextField();
+	JPasswordField loginPassword = new JPasswordField();
 	JTextField invalidLogin = new JTextField(7);
+	Border lineBorder = new LineBorder(new Color(252, 205, 53),5);
+	ImageIcon javaIcon = new ImageIcon("image/java.gif");
+	JLabel logo = new JLabel(javaIcon);
+	JLabel logo2 = new JLabel(javaIcon);
+
 	private ArrayList<User> users = loadUsers();
 
 	User currentUser = new User();
@@ -36,7 +42,7 @@ public class Menu extends JFrame {
 	public Menu() {
 		JTabbedPane menuTabbedPane = new JTabbedPane();
 		invalidLogin.setEditable(false);
-		
+		invalidLogin.setForeground(Color.RED);
 		//set colors
 		
 
@@ -131,6 +137,8 @@ public class Menu extends JFrame {
 					users.add(newUser);
 					//create new user .txt file
 					newUser.newUserFile();
+					// Change the current user to the new user profile
+					currentUser = newUser;
 					//change to set name of card/panel added
 					menuCard.show(menuCardPanel, "Welcome");				
 					
@@ -154,9 +162,10 @@ public class Menu extends JFrame {
 		// get the frame read
 		add(menuCardPanel);
 		setTitle("Cup O'Java Financial Institute");
+		pack();
 		setLocationRelativeTo(null); // center the frame
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(600, 400);
+		setSize(600, 475);
 		setVisible(true);
 	}
 
@@ -228,15 +237,20 @@ public class Menu extends JFrame {
 	}
 	
 
+	/**
+	 * This method creates the GUI page for the user to create an account on
+	 * @return JComponent create account page
+	 */
 	public JComponent createAccountPage() {
 
 		JPanel loginPage = new JPanel();
 		loginPage.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 20));
 		JPanel loginGrid = new JPanel(new GridLayout(2,2));
-
+		loginGrid.setBorder(lineBorder);
 
 		JLabel createAccount = new JLabel("                     Create Account                   ");
-		createAccount.setFont(new Font("TimesRoman", Font.BOLD, 28));
+		createAccount.setForeground(new Color(252, 205, 53));
+		createAccount.setFont(new Font("Kristen ITC", Font.BOLD, 28));
 		createAccount.setHorizontalAlignment(SwingConstants.CENTER);
 
 		JLabel jlbUserName = new JLabel("Username:      ");
@@ -255,19 +269,29 @@ public class Menu extends JFrame {
 		loginGrid.add(newPassword);
 		loginPage.add(loginGrid);
 		loginPage.add(jbtNewAccount);
+		loginPage.add(logo2);
+
+		loginPage.setBackground(new Color(128,0,0));
+
 
 		return loginPage;
 	}
 
+	/**
+	 * This method creates the GUI login page
+	 * @return JComponent login page
+	 */
 	public JComponent createLoginPage() {
 
 		JPanel loginPage = new JPanel();
 		loginPage.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 20));
 		JPanel loginGrid = new JPanel(new GridLayout(2,2));
+		loginGrid.setBorder(lineBorder);
 
 
 		JLabel welcomeLabel = new JLabel("Welcome to the Cup O'Java Finance App!");
-		welcomeLabel.setFont(new Font("TimesRoman", Font.BOLD, 28));
+		welcomeLabel.setForeground(new Color(252, 205, 53));
+		welcomeLabel.setFont(new Font("Kristen ITC", Font.BOLD, 26));
 		welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
 		JLabel jlbUserName = new JLabel("Username:      ");
@@ -288,29 +312,44 @@ public class Menu extends JFrame {
 		loginPage.add(loginButton);
 		loginPage.add(invalidLogin);
 
-		JLabel jlbcreateAccount = new JLabel("            Don't have an account? Create one below!                  "); 
-		jlbcreateAccount.setFont(new Font("TimesRoman", Font.PLAIN, 22));
+		JLabel jlbcreateAccount = new JLabel("      Click here to create new account:"); 
+		jlbcreateAccount.setForeground(new Color(252, 205, 53));
+		jlbcreateAccount.setFont(new Font("Arial", Font.PLAIN, 22));
 		jlbcreateAccount.setHorizontalAlignment(SwingConstants.CENTER);
 
 		loginPage.add(jlbcreateAccount);
 		loginPage.add(jbtcreateAccount);
+		loginPage.add(logo);
 
-		loginPage.setBackground(new Color(252, 205, 53));
-		
+		loginPage.setBackground(new Color(128,0,0));
+
 		return loginPage;
 	}
 
+	/**
+	 * This methods creates the GUI log out page
+	 * @param jbtlogOut
+	 * @return JCompnent logOutPage
+	 */
 	public JComponent logOutPage(JButton jbtlogOut) {
 
 		JPanel logOut = new JPanel();
-
+		Color gold = new Color(252, 205, 53);
 		JLabel question = new JLabel("Click here to log out:");
+		question.setForeground(gold);
 
 		logOut.add(question);
 		logOut.add(jbtlogOut);
+		logOut.setBackground(new Color(128,0,0));
 		return logOut;
 	}
 
+	/** This method is used to determine where a given user exits in a list of already existing users
+	 * @param users
+	 * @param username
+	 * @param password
+	 * @return if user exits
+	 */
 	public static boolean existingUser(ArrayList<User> users, String username, String password) {
 		for(int i=0; i<users.size();i++) {
 			if(username.equals(users.get(i).getUsername()) && password.equals(users.get(i).getPassword())) {
@@ -320,24 +359,24 @@ public class Menu extends JFrame {
 		return false;
 
 	}
-	
+
 	public User userFind(String username, String password) {
-		
+
 		User curr = new User();
-		
+
 		for(int i=0; i<users.size();i++) {
-			
+
 			if(username.equals(users.get(i).getUsername()) && password.equals(users.get(i).getPassword())) {
-				
+
 				curr = users.get(i);
-				
+
 			}
 		}
-		
+
 		//System.out.println(curr.getUsername());
-		
+
 		return curr;
-		
+
 	}
 	
 	public static void main(String[] args) {
