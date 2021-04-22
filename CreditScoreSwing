@@ -3,13 +3,21 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.border.*;
-
+/**
+ * This class give various credit score ratings based on credit score factors.
+ * The user will be able to enter credit score factors using slider bars.
+ * @author Jacob Mackowiak
+ *
+ */
 public class CreditScoreSwing {
-	
-	
 
+	/**
+	 * This method creates a JComponent from the CreditScoreRatings.java
+	 * @return JComponent credit ratings tab for user options
+	 */
 	public static JComponent CreditScoreTab() {
 		
+		// create JComponents
 		JSlider jslcreditAccounts = new JSlider(0, 15, 0);
 		JSlider jslavailableCredit = new JSlider(0, 70000, 0);
 		JSlider jslcreditLength = new JSlider(0,100,0);
@@ -26,7 +34,7 @@ public class CreditScoreSwing {
 		JTextField jtfpercentOnTimePaymentsRating = new JTextField();
 		JTextField jtfcreditScoreRating = new JTextField();
 
-
+		// Set text fields to false
 		jtfcreditAccountsRating.setEditable(false);
 		jtfavailableCreditRating.setEditable(false);
 		jtfcreditLengthRating.setEditable(false);
@@ -37,38 +45,66 @@ public class CreditScoreSwing {
 
 		setSliderTicMarks(jslcreditAccounts, jslavailableCredit, jslcreditLength, 
 				jslpercentCreditUsed, jslrecentInquiries, jslpercentOnTimePayments, jslcreditScore);
-		JPanel panel = new JPanel(new BorderLayout());
+		
+		// Create jpanel to add sliders and textfields
+		Color gold = new Color(252, 205, 53);
 		JPanel p1 = new JPanel(new GridLayout(7, 3));
-		p1.add(new JLabel("Credit Accounts"));
+		JLabel creditAccounts = new JLabel("Credit Accounts");
+		creditAccounts.setForeground(gold);
+		JLabel availableCredit = new JLabel("Available Credit (x10^3)");
+		availableCredit.setForeground(gold);
+		JLabel creditLength = new JLabel("Credit Length (years)");
+		creditLength.setForeground(gold);
+		JLabel creditUsed = new JLabel("Credit Used (%)");
+		creditUsed.setForeground(gold);
+		JLabel inquires = new JLabel("Recent Inquiries");
+		inquires.setForeground(gold);
+		JLabel payments = new JLabel("On time payments (%)");
+		payments.setForeground(gold);
+		JLabel creditScore = new JLabel("Credit Score");
+		creditScore.setForeground(gold);
+		TitledBorder factors = new TitledBorder("Enter credit score factors");
+		factors.setTitleColor(gold);
+		JLabel [] ratings = new JLabel[7];
+		
+		for(int i =0; i< ratings.length;i++) {
+			ratings[i] = new JLabel("                       Rating:");
+			ratings[i].setForeground(gold);
+		}
+		
+		p1.add(creditAccounts);
 		p1.add(jslcreditAccounts);
-		p1.add(new JLabel("                       Rating:"));
+		p1.add(ratings[0]);
 		p1.add(jtfcreditAccountsRating);
-		p1.add(new JLabel("Available Credit (x10^3)"));
+		p1.add(availableCredit);
 		p1.add(jslavailableCredit);
-		p1.add(new JLabel("                       Rating:"));
+		p1.add(ratings[1]);
 		p1.add(jtfavailableCreditRating);
-		p1.add(new JLabel("Credit Length"));
+		p1.add(creditLength);
 		p1.add(jslcreditLength);
-		p1.add(new JLabel("                       Rating:"));
+		p1.add(ratings[2]);
 		p1.add(jtfcreditLengthRating);
-		p1.add(new JLabel("Credit Used (%)"));
+		p1.add(creditUsed);
 		p1.add(jslpercentCreditUsed );
-		p1.add(new JLabel("                       Rating:"));
+		p1.add(ratings[3]);
 		p1.add(jtfpercentCreditUsedRating);
-		p1.add(new JLabel("Recent Inquriries"));
+		p1.add(inquires);
 		p1.add(jslrecentInquiries );
-		p1.add(new JLabel("                       Rating:"));
+		p1.add(ratings[4]);
 		p1.add(jtfrecentInquiriesRating);
-		p1.add(new JLabel("On time payments (%)"));
+		p1.add(payments);
 		p1.add(jslpercentOnTimePayments);
-		p1.add(new JLabel("                       Rating:"));
+		p1.add(ratings[5]);
 		p1.add(jtfpercentOnTimePaymentsRating);
-		p1.add(new JLabel("Credit Score"));
+		p1.add(creditScore);
 		p1.add(jslcreditScore);
-		p1.add(new JLabel("                       Rating:"));
+		p1.add(ratings[6]);
 		p1.add(jtfcreditScoreRating);
-		p1.setBorder(new TitledBorder("Enter credit score factors"));
+		
+		p1.setBorder(factors);
+		
 
+		p1.setBackground(new Color(128,0,0));
 
 		//Lambda expression
 		//Credit Accounts
@@ -91,7 +127,7 @@ public class CreditScoreSwing {
 					int num = source.getValue();
 					String rating = CreditScoreRatings.availableCreditRating(num);
 
-					jtfavailableCreditRating.setText("" + rating);
+					jtfavailableCreditRating.setText("$" + rating);
 				} 
 			}
 		});
@@ -160,6 +196,16 @@ public class CreditScoreSwing {
 
 	}
 	
+	/**
+	 * This method sets the tic marks for the different JSliders on the panel
+	 * @param jslcreditAccounts
+	 * @param jslavailableCredit
+	 * @param jslcreditLength
+	 * @param jslpercentCreditUsed
+	 * @param jslrecentInquiries
+	 * @param jslpercentOnTimePayments
+	 * @param jslcreditScore
+	 */
 	public static void setSliderTicMarks(JSlider jslcreditAccounts, JSlider jslavailableCredit, JSlider jslcreditLength, 
 			JSlider jslpercentCreditUsed, JSlider jslrecentInquiries, JSlider jslpercentOnTimePayments, JSlider jslcreditScore) {
 		jslcreditAccounts.setMajorTickSpacing(5);
@@ -196,15 +242,6 @@ public class CreditScoreSwing {
 		jslcreditScore.setMinorTickSpacing(100);
 		jslcreditScore.setPaintTicks(true);
 		jslcreditScore.setPaintLabels(true);
-		
-
-
 	}
-	
-	public static void main(String [] args) {
-
-		//JFrame frame = new CreditScoreSwing();
-
-	}
-
 }
+
