@@ -7,24 +7,14 @@ import java.util.ArrayList;
 
 /*
 
-	Changes made by Patrick:
 	
-		- In username and password constructor, creating userAccounts as an empty list when called (Otherwise when adding accounts
-		  to a user object after calling constructor fails, since accounts cannot be added to a null list
-		- Added newUserFile method, called when create account is used in the GUI. Method creates a text file in the Users folder
-		  and write the username and password information to it.
-		- Added saveUserFile method. This method is not called anywhere yet, but is intended to be the way we will overwrite old files and
-		  save the new information, when transfers are done and etc. This can be called in methods for those transactions.
-		- Added an arraylist to hold the debts each user may have, in order to save them to files and load them properly
-		- Added an addDebt method to add debts to the users profile 
-		- Added default constructor
 
 */
 public class User {
 	private String userName; // have an error come up if not unique
 	private String password; //encrypt  
 	private ArrayList<Account> userAccounts; //to hold account IDs of user accounts, arrayLists 
-	private ArrayList<Double> LoanCalculations;
+	private ArrayList<Loan> userLoans;
 	private ArrayList<Double> SavingCalculations;
 	
 	private ArrayList<Debt> debts; // to hold account debts that users have added
@@ -33,7 +23,7 @@ public class User {
 		userName = "";
 		password = "";
 		userAccounts = new ArrayList<Account>();
-		LoanCalculations = new ArrayList<Double>();
+		userLoans = new ArrayList<Loan>();
 		SavingCalculations = new ArrayList<Double>();
 		debts = new ArrayList<Debt>();
 	}
@@ -42,7 +32,7 @@ public class User {
 		userName = user;
 		password = pass;
 		userAccounts = new ArrayList<Account>();
-		LoanCalculations = new ArrayList<Double>();
+		userLoans = new ArrayList<Loan>();
 		SavingCalculations = new ArrayList<Double>();
 		debts = new ArrayList<Debt>();
 
@@ -52,32 +42,39 @@ public class User {
 		userName = user;
 		password = pass;
 		userAccounts = accs;
-		LoanCalculations = new ArrayList<Double>();
+		userLoans = new ArrayList<Loan>();
 		SavingCalculations = new ArrayList<Double>();
 		debts = new ArrayList<Debt>();
 
 	}
-
-	private void LoanCalc(int monthlyPayment, int interestRate, int numberOfMonths){
-		double loanCalc = (monthlyPayment / interestRate) * (1 - 1/(Math.pow((1+interestRate),numberOfMonths)));
-		displayLoanCalc(loanCalc);
-		LoanCalculations.add(loanCalc);
+	
+	public void addLoans(Loan l) {
+		userLoans.add(l);
 	}
-
-	public void displayLoanCalc(double loanCalc){
-		//JavaFX Here
+	
+	public void addLoans(String name, double loan, double years, double rate, double dp, double mp, double total) {
+		Loan l = new Loan(name, loan, years, rate, dp, mp, total);
+		userLoans.add(l);
 	}
-	public void editLoanCalc(double oldLoanCalc, double newLoanCalc) {
-		int x = LoanCalculations.indexOf(oldLoanCalc);
-		LoanCalculations.set(x, newLoanCalc);
+	
+	public ArrayList<Loan> getLoans(){
+		return userLoans;
 	}
-	public void deleteLoanCalc(double LoanCalc) {
-		LoanCalculations.remove(LoanCalc);
+	
+	public void addAccounts(String name, double balance) {
+		Integer id = (int)(Math.random() * 10000000);
+		String accId =id.toString();
+		Account a = new Account(name, accId, balance);
+		userAccounts.add(a);
 	}
 	public void addAccounts(String name, String id, double balance) {
 		Account a = new Account(name, id, balance);
 		userAccounts.add(a);
 	}
+	public ArrayList<Account> getAccounts() {
+		return userAccounts;
+	}
+	
 	
 	public void addDebts(Debt d) {
 		debts.add(d);
@@ -173,3 +170,4 @@ public class User {
 
 
 }
+
