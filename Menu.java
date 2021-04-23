@@ -53,8 +53,9 @@ public class Menu extends JFrame {
 		//add different classes for app into the menu tabbed pane
 
 		//add accounts tab
-		JComponent bankAccounts = new JPanel();
-		menuTabbedPane.addTab("Bank Accounts", bankAccounts);
+		UserSwing home = new UserSwing();
+		JComponent bankAccounts = home.UserSwing();
+		menuTabbedPane.addTab("Accounts", bankAccounts);
 		// add debt management tab
 		DebtManagement dm = new DebtManagement();
 		JComponent dmTab = dm.DebtManagement();
@@ -87,6 +88,9 @@ public class Menu extends JFrame {
 				if(existingUser(users, loginUserName.getText(), loginPassword.getText())) {
 					currentUser = userFind(loginUserName.getText(), loginPassword.getText());
 					dm.curr = currentUser;
+					home.curr = currentUser;
+					home.setAccounts();
+					menuTabbedPane.setSelectedIndex(0);
 					loginUserName.setText("");
 					loginPassword.setText("");
 					menuCard.show(menuCardPanel, "Welcome"); 
@@ -139,8 +143,11 @@ public class Menu extends JFrame {
 					newUser.newUserFile();
 					// Change the current user to the new user profile
 					currentUser = newUser;
+					home.curr = currentUser;
+					home.setAccounts();
+					menuTabbedPane.setSelectedIndex(0);
 					//change to set name of card/panel added
-					menuCard.show(menuCardPanel, "Welcome");				
+					menuCard.show(menuCardPanel, "Welcome");					
 					
 				}
 				
@@ -216,6 +223,10 @@ public class Menu extends JFrame {
 					}
 					else if (tokens[0].contentEquals("d")) {
 						users.get(i).addDebts(tokens[1], Double.parseDouble(tokens[2]), Double.parseDouble(tokens[3]));
+					}
+					else if(tokens[0].contentEquals("l")) {
+						users.get(i).addLoans(tokens[1], Double.parseDouble(tokens[2]), Double.parseDouble(tokens[3]), Double.parseDouble(tokens[4]),
+								Double.parseDouble(tokens[5]), Double.parseDouble(tokens[6]), Double.parseDouble(tokens[7]));
 					}
 					
 					// Increase the line count in file by one
