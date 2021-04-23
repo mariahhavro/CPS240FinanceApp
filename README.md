@@ -13,7 +13,7 @@ Cup O’ Java Financial Institute is a financial application that uses Java Swin
 ---INCLUDE REFERENCES HERE AFTER THEY ARE INCLUDED IN THE PAPER---
 
 ## Running and Installation
-Tested and Verified to work on the IDE Eclipse. Simply launch the project as you would any other program. No special parameters or measures are necessary for running the project. 
+Tested and Verified to work on the IDE Eclipse. In order for the program to run, make sure a folder name "Users" is created under the project folder. This will allow to .txt files for the user to be created and saved. When the application is initially launched, the user will have the option to log in or create a new account. Once logged in, there will be a variety of tabs for the user to use. These include creating bank accounts to handle their savings, a loan calculator to predict interest on loans, a debt management tool and a credit score ratings tool to use. After information is entered in the app, a .txt file will be created for the user in the "Users" folder once the user logs out. The user needs to log out on the log out page for this information to be updated. The .txt file for the user will include their login information, bank account information, and even their debt managment information that has been entered. 
 
 ## Talk about how to add in an account
 
@@ -23,7 +23,7 @@ Tested and Verified to work on the IDE Eclipse. Simply launch the project as you
 The Accounts class stores name of account, unique ID for account, and balance for a particular user. To create an account, a User must input a name and a balance of money to store in the account. 
 
 ### Credit Score Ratings
-This method accepts an inputted user credit score and displays to the user various assessments of their credit. 
+This method accepts an inputted user credit score factors using slider bars and displays to the user various assessments of the entered information. 
 
 ### Debt Management 
 Allows users to View/Manage Debt, view a Debt Payment Plans, Add/Edit Debts and look at debt payment plans. To create a new Debt, a user must input the Name, value, and rate. 
