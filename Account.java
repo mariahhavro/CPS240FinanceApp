@@ -45,6 +45,9 @@ public class Account {
 		balance = b;
 	}
 	
+	public Double getBalance() {
+		return balance;
+	}
 	
 	public String getName() {
 		return name;
