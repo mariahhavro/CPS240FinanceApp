@@ -20,13 +20,13 @@ Tested and Verified to work on the IDE Eclipse. Simply launch the project as you
 ## Class Breakdown
 
 ### Accounts
-The Accounts class stores name of account, unique ID for account, and balance for a particular user. 
+The Accounts class stores name of account, unique ID for account, and balance for a particular user. To create an account, a User must input a name and a balance of money to store in the account. 
 
 ### Credit Score Ratings
-This method accepts a user credit score and shows how good their individual score is. 
+This method accepts an inputted user credit score and displays to the user various assessments of their credit. 
 
 ### Debt Management 
-Allows users to View/Manage Debt and look at debt payment plans. 
+Allows users to View/Manage Debt, view a Debt Payment Plans, Add/Edit Debts and look at debt payment plans. To create a new Debt, a user must input the Name, value, and rate. 
 
 ### Menu
 Main menu - Allows User to login and choose which part of the application they would like to interact with. 
