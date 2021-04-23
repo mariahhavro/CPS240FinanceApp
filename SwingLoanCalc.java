@@ -35,7 +35,7 @@ Font tnr = new Font("TimesNewRoman",20, 20);
 
 //icons downloaded from icons8.com
 Icon home = new ImageIcon("icons8-home-128.png");
-Icon auto = new ImageIcon("icons8-suv-100.png");		//REMOVE ICON
+Icon pen = new ImageIcon("icons8-pencil-96.png");
 Icon budget = new ImageIcon("icons8-money-96.png");
 
 // Calc menu JComponents
@@ -56,7 +56,7 @@ JButton bCalcMenu3 = new JButton("Return to loan menu");
 
 //Buttons with icons
 JButton bPrivLoan = new JButton(home);
-JButton bViewLoan = new JButton(auto); //Change icon!!!!!!
+JButton bViewLoan = new JButton(pen);
 JButton bBudget = new JButton(budget);
 
 
