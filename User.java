@@ -64,14 +64,24 @@ public class User extends JFrame{
 				     Account temp = Accounts.get(x);
 				  	  String tempName = temp.getName();
 				     if(accountEntered.getText().equals(tempName)){
-				         Accounts.get(x).Withdraw(Double.parseDouble(depositEntered.getText()));
-				         depositDirections.setFont(new Font("TimesRoman",Font.BOLD,30));
-				         depositDirections.setText("$"+depositEntered.getText()+" Deposited");
+				    	 try {
+					         Accounts.get(x).Withdraw(Double.parseDouble(depositEntered.getText()));
+					         depositDirections.setFont(new Font("TimesRoman",Font.BOLD,30));
+					         depositDirections.setText("$"+depositEntered.getText()+" Deposited");
+				    	 }
+				    	 catch(Exception E) {
+				    		 depositDirections.setFont(new Font("TimesRoman",Font.BOLD,20));
+					         depositDirections.setText("Please enter a numeric value in the Amount Category");
+				    	 }
 				     }
 				     else{
 				    	 depositDirections.setFont(new Font("TimesRoman",Font.BOLD,30));
-				         depositDirections.setText("Account "+accountEntered+" not found");
+				         depositDirections.setText("Account "+accountEntered.getText()+" not found");
 				     }
+				}
+				if(Accounts.size()<=0) {
+					depositDirections.setFont(new Font("TimesRoman",Font.BOLD,30));
+			         depositDirections.setText("No Accounts Available");
 				}
 				
 				ActionListener taskPerformer = new ActionListener() {
@@ -160,15 +170,27 @@ public class User extends JFrame{
 				     Account temp = Accounts.get(x);
 				  	 String tempName = temp.getName();
 				     if(accountChosen.getText().equals(tempName)){
-				         Accounts.get(x).Withdraw(Double.parseDouble(withdrawEntered.getText()));
-				         withdrawDirections.setFont(new Font("TimesRoman",Font.BOLD,20));
-				         withdrawDirections.setText("$"+withdrawEntered.getText()+" Withdrawn");
+				         try {
+					    	 Accounts.get(x).Withdraw(Double.parseDouble(withdrawEntered.getText()));
+					         withdrawDirections.setFont(new Font("TimesRoman",Font.BOLD,20));
+					         withdrawDirections.setText("$"+withdrawEntered.getText()+" Withdrawn");
+				         }
+				         catch(Exception E) {
+				        	 withdrawDirections.setFont(new Font("TimesRoman",Font.BOLD,20));
+					         withdrawDirections.setText("Please Enter A Numeric Number in the Amount Category");
+				         }
 				     }
 				     else{
 		            	 withdrawDirections.setFont(new Font("TimesRoman",Font.BOLD,30));
-		            	 withdrawDirections.setText("Account "+accountChosen+" not found");
+		            	 withdrawDirections.setText("Account "+accountChosen.getText()+" not found");
 				             }
+				     
 				}
+				if(Accounts.size()<=0) {
+					withdrawDirections.setFont(new Font("TimesRoman",Font.BOLD,30));
+			         depositDirections.setText("No Accounts Available");
+				}
+				
 				ActionListener taskPerformer = new ActionListener() {
 		             public void actionPerformed(ActionEvent evt) {
 		            	 withdrawDirections.setText("Please Enter The Amount of Money You Wish To Withdraw");
@@ -347,12 +369,18 @@ public class User extends JFrame{
 		jbtncreateAccountEnter.setFont(new Font("TimesRoman",Font.BOLD,30));
 		jbtncreateAccountEnter.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
+				try {
 				Account account = new Account(name.getText(),Double.parseDouble(balance.getText()));
 				name.setText("");
 				balance.setText("");
 				Accounts.add(account);
 				createAccountDirections.setFont(new Font("TimesRoman",Font.BOLD,30));
 				createAccountDirections.setText("Account Created");
+				}
+				catch(Exception E) {
+					createAccountDirections.setFont(new Font("TimesRoman",Font.BOLD,20));
+					createAccountDirections.setText("Please Enter A Numeric Value for Balance");
+				}
 				
 				ActionListener taskPerformer = new ActionListener() {
 		             public void actionPerformed(ActionEvent evt) {
@@ -480,15 +508,6 @@ public class User extends JFrame{
 		password = pass;
 	}
 	
-	
-
-	
-	/*This method is likely unneeded
-	public void displayLoanCalc(double loanCalcNUM){
-		loanCalc.setVisible(true);
-		loanCalc.setText("Loan Calculation: "+loanCalcNUM);
-	}
-	*/
 	
 	public String getUsername() {
 		return this.userName;
