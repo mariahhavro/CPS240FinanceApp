@@ -18,6 +18,7 @@ public class User {
 	private ArrayList<Double> SavingCalculations;
 	
 	private ArrayList<Debt> debts; // to hold account debts that users have added
+	private ArrayList<Loan> loans;
 
 	User(){
 		userName = "";
@@ -26,6 +27,7 @@ public class User {
 		userLoans = new ArrayList<Loan>();
 		SavingCalculations = new ArrayList<Double>();
 		debts = new ArrayList<Debt>();
+		loans = new ArrayList<Loan>();
 	}
 	
 	User(String user, String pass){
@@ -35,7 +37,7 @@ public class User {
 		userLoans = new ArrayList<Loan>();
 		SavingCalculations = new ArrayList<Double>();
 		debts = new ArrayList<Debt>();
-
+		loans = new ArrayList<Loan>();
 	}
 	
 	User(String user, String pass, ArrayList<Account> accs){
@@ -45,20 +47,24 @@ public class User {
 		userLoans = new ArrayList<Loan>();
 		SavingCalculations = new ArrayList<Double>();
 		debts = new ArrayList<Debt>();
-
+		loans = new ArrayList<Loan>();
 	}
 	
 	public void addLoans(Loan l) {
-		userLoans.add(l);
+		loans.add(l);
 	}
 	
-	public void addLoans(String name, double loan, double years, double rate, double dp, double mp, double total) {
-		Loan l = new Loan(name, loan, years, rate, dp, mp, total);
-		userLoans.add(l);
+	public void addLoans(String loanName, double loan, double years, double rate, double downPay, double monthlyPayment, double totalInterestAccrued) {
+		Loan l = new Loan(loanName, loan, years, rate, downPay, monthlyPayment, totalInterestAccrued);
+		loans.add(l);
 	}
 	
 	public ArrayList<Loan> getLoans(){
-		return userLoans;
+		return loans;
+	}
+	
+	public void setLoans(ArrayList<Loan> l) {
+		loans = l;
 	}
 	
 	public void addAccounts(String name, double balance) {
