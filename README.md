@@ -13,7 +13,7 @@ Cup O’ Java Financial Institute is a financial application that uses Java Swin
 ---INCLUDE REFERENCES HERE AFTER THEY ARE INCLUDED IN THE PAPER---
 
 ## Running and Installation
-Tested and Verified to work on the IDE Eclipse. Simply launch the project as you would any other project. 
+Tested and Verified to work on the IDE Eclipse. Simply launch the project as you would any other program. No special parameters or measures are necessary for running the project. 
 
 ## Class Breakdown
 
