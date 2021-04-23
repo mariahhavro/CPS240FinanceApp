@@ -45,6 +45,11 @@ public class Account {
 		balance = b;
 	}
 	
+	
+	public String getName() {
+		return name;
+	}
+	
 	// Random balance method, with a minimum of 0 and maximum of $50,000
 	public void RandBalance() {
 		balance = Math.random() * 50000;
