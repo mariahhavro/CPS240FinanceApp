@@ -15,8 +15,6 @@ Cup O’ Java Financial Institute is a financial application that uses Java Swin
 ## Running and Installation
 Tested and Verified to work on the IDE Eclipse. In order for the program to run, make sure a folder name "Users" is created under the project folder. This will allow to .txt files for the user to be created and saved. When the application is initially launched, the user will have the option to log in or create a new account. Once logged in, there will be a variety of tabs for the user to use. These include creating bank accounts to handle their savings, a loan calculator to predict interest on loans, a debt management tool and a credit score ratings tool to use. After information is entered in the app, a .txt file will be created for the user in the "Users" folder once the user logs out. The user needs to log out on the log out page for this information to be updated. The .txt file for the user will include their login information, bank account information, and even their debt managment information that has been entered. 
 
-## Talk about how to add in an account
-
 ## Class Breakdown
 
 ### Accounts
@@ -32,7 +30,7 @@ Allows users to View/Manage Debt, view a Debt Payment Plans, Add/Edit Debts and 
 Main menu - Allows User to login and choose which part of the application they would like to interact with. 
 
 ### User 
-Lets the User Access the Loan Calculator and View/Manage Accounts
+Lets the User create bank accounts. With these they can deposit or withdraw money and transfer money to other accounts. 
  
 ### LoanCalc
 The Loan Calculator allows users to create loans of different types and view the loan data.
