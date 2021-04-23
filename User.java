@@ -13,6 +13,9 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.*;
 
+import javax.swing.Timer;
+
+
 import java.util.ArrayList;
 import java.lang.Math;
 
@@ -62,11 +65,27 @@ public class User extends JFrame{
 				  	  String tempName = temp.getName();
 				     if(accountEntered.getText().equals(tempName)){
 				         Accounts.get(x).Withdraw(Double.parseDouble(depositEntered.getText()));
+				         depositDirections.setFont(new Font("TimesRoman",Font.BOLD,30));
+				         depositDirections.setText("$"+depositEntered.getText()+" Deposited");
 				     }
 				     else{
+				    	 depositDirections.setFont(new Font("TimesRoman",Font.BOLD,30));
 				         depositDirections.setText("Account "+accountEntered+" not found");
 				     }
 				}
+				
+				ActionListener taskPerformer = new ActionListener() {
+		             public void actionPerformed(ActionEvent evt) {
+		            	 depositDirections.setText("Please Enter The Amount of Money You Wish To Deposit");
+		            	 depositDirections.setFont(new Font("TimesRoman",Font.PLAIN,20));
+		             }
+		         };
+		 		Timer timer = new Timer(1000 ,taskPerformer);
+		 		timer.setRepeats(false);
+	            timer.setCoalesce(true);
+	            timer.start();
+		 		accountEntered.setText("Account Name");
+				depositEntered.setText("Balance");
 				 
 			}});
 		depositEntered.addMouseListener(new MouseAdapter() {
@@ -82,8 +101,8 @@ public class User extends JFrame{
 			  }
 			});
 		depositMoneyPanel.add(depositDirections);
-		depositMoneyPanel.add(depositEntered);
 		depositMoneyPanel.add(accountEntered);
+		depositMoneyPanel.add(depositEntered);
 		depositMoneyPanel.add(depositEnter);
 		
 		JButton jbtnDepositDeleteBack = new JButton("BACK");
@@ -139,21 +158,36 @@ public class User extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				for(int x = 0; x<Accounts.size(); x++){
 				     Account temp = Accounts.get(x);
-				  	  String tempName = temp.getName();
+				  	 String tempName = temp.getName();
 				     if(accountChosen.getText().equals(tempName)){
 				         Accounts.get(x).Withdraw(Double.parseDouble(withdrawEntered.getText()));
+				         withdrawDirections.setFont(new Font("TimesRoman",Font.BOLD,20));
+				         withdrawDirections.setText("$"+withdrawEntered.getText()+" Withdrawn");
 				     }
 				     else{
-				         withdrawDirections.setText("Account "+accountChosen+" not found");
-				     }
+		            	 withdrawDirections.setFont(new Font("TimesRoman",Font.BOLD,30));
+		            	 withdrawDirections.setText("Account "+accountChosen+" not found");
+				             }
 				}
+				ActionListener taskPerformer = new ActionListener() {
+		             public void actionPerformed(ActionEvent evt) {
+		            	 withdrawDirections.setText("Please Enter The Amount of Money You Wish To Withdraw");
+		            	 withdrawDirections.setFont(new Font("TimesRoman",Font.PLAIN,20));
+		             }
+		         };
+		 		Timer timer = new Timer(1000 ,taskPerformer);
+		 		timer.setRepeats(false);
+	            timer.setCoalesce(true);
+	            timer.start();
+		 		accountChosen.setText("Account Name");
+				withdrawEntered.setText("Amount");
 			}
 		});
 		withdrawMoneyPanel.add(withdrawDirections);
 		
 		withdrawEntered.setFont(new Font("TimesRoman",Font.PLAIN,20));
-		withdrawMoneyPanel.add(withdrawEntered);
 		withdrawMoneyPanel.add(accountChosen);
+		withdrawMoneyPanel.add(withdrawEntered);
 		withdrawMoneyPanel.add(withdrawEnter);
 		
 		JButton jbtnWithdrawDeleteBack = new JButton("BACK");
@@ -172,7 +206,6 @@ public class User extends JFrame{
 		withdrawEntered.setBackground(new Color(252, 205, 53));
 		
 		//Transfer Money Section
-	
 		transferMoneyPanel = new JPanel(new GridLayout(6,6,6,6));
 		JTextField transferEntered = new JTextField(30);
 		transferEntered.setHorizontalAlignment(JTextField.CENTER);
@@ -199,20 +232,37 @@ public class User extends JFrame{
 				  	 String tempName = temp.getName();
 				  	 if(accountOne.getText().equals(tempName)){
 				  		for(int y = 0; y<Accounts.size(); y++){
-					  		Account temp2 = Accounts.get(x);
-						  	 String tempName2 = temp2.getName();
-						  	if(accountTwo.getText().equals(tempName)){
+					  		Account temp2 = Accounts.get(y);
+						  	String tempName2 = temp2.getName();
+						  	if(accountTwo.getText().equals(tempName2)){
 						  		temp.TransferFrom(Double.parseDouble(transferEntered.getText()),temp2);
 						  		transferDirections.setText("Transfer Successful.");
+						  		transferDirections.setFont(new Font("TimesRoman",Font.BOLD,30));
 						  	}
 						  	else{
-						         transferDirections.setText("One Or More Accounts Were Not Found");
-						     }
-						  	
+						         transferDirections.setText("Account "+accountTwo.getText()+" was not found");
+						         transferDirections.setFont(new Font("TimesRoman",Font.BOLD,30));
+						     }	
 					  	} 
 				     }
-				  	 
+				  	else{
+				         transferDirections.setText("Account "+accountOne.getText()+" was not found");
+				         transferDirections.setFont(new Font("TimesRoman",Font.BOLD,30));
+				  	}
 				}
+				ActionListener taskPerformer = new ActionListener() {
+		             public void actionPerformed(ActionEvent evt) {
+		            	 transferDirections.setText("Please Enter The Amount of Money You Wish To Transfer");
+		            	 transferDirections.setFont(new Font("TimesRoman",Font.PLAIN,20));
+		             }
+		         };
+		 		Timer timer = new Timer(1000 ,taskPerformer);
+		 		timer.setRepeats(false);
+	            timer.setCoalesce(true);
+	            timer.start();
+	            accountOne.setText("Name of Account To Withdraw From");
+	            accountTwo.setText("Name of Account To Deposit To");
+	            transferEntered.setText("Amount to Transfer");
 				 
 			}});
 		transferEntered.addMouseListener(new MouseAdapter() {
@@ -301,7 +351,23 @@ public class User extends JFrame{
 				name.setText("");
 				balance.setText("");
 				Accounts.add(account);
+				createAccountDirections.setFont(new Font("TimesRoman",Font.BOLD,30));
+				createAccountDirections.setText("Account Created");
 				
+				ActionListener taskPerformer = new ActionListener() {
+		             public void actionPerformed(ActionEvent evt) {
+		            	 createAccountDirections.setText("Enter the Specified Fields Below to Create an Account");
+		            	 createAccountDirections.setFont(new Font("TimesRoman",Font.PLAIN,20));
+		             }
+		         };
+		 		Timer timer = new Timer(1000 ,taskPerformer);
+		 		timer.setRepeats(false);
+	            timer.setCoalesce(true);
+	            timer.start();
+		 		name.setText("Account Name");
+				balance.setText("Balance");
+		 		
+		 		
 				//Put Exception for if not balance isn't a double here or if it isn't an index
 			}
 		});
@@ -345,6 +411,8 @@ public class User extends JFrame{
 		jbtDepositMoney.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				card.show(cardPanel,"Deposit Money");
+				accountEntered.setText("Account Name");
+				depositEntered.setText("Balance");
 			}
 		});
 		
@@ -359,12 +427,18 @@ public class User extends JFrame{
 		jbtWithdrawMoney.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				card.show(cardPanel,"Withdraw Money");
+				accountChosen.setText("Account Name");
+				withdrawEntered.setText("Amount");
 			}
 		});
 		
 		jbtTransferMoney.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				card.show(cardPanel,"Transfer Money");
+				accountOne.setText("Name of Account To Withdraw From");
+	            accountTwo.setText("Name of Account To Deposit To");
+	            transferEntered.setText("Amount to Transfer");
+				
 			}
 		});
 		jbtDepositMoney.setFont(new Font("TimesRoman", Font.PLAIN, 20));
