@@ -2,9 +2,9 @@
 
 Cup O’ Java Financial Institute is a financial application that uses Java Swing to allow users to 
 
-## Usage
-It contains a graphical user interface that allows a user to make an account with their own username and password.
-This application will allow the user to divide their savings into different categories that they wish to save for. 
+## Features
+*It contains a graphical user interface that allows a user to make an account with their own username and password.
+*This application will allow the user to divide their savings into different categories that they wish to save for. 
 
 
 ## Accounts
