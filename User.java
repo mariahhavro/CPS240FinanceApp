@@ -60,14 +60,16 @@ public class User extends JFrame{
 		depositEnter.setFont(new Font("TimesRoman",Font.BOLD,30));
 		depositEnter.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
+				boolean notFound = true;
 				for(int x = 0; x<Accounts.size(); x++){
 				     Account temp = Accounts.get(x);
 				  	  String tempName = temp.getName();
 				     if(accountEntered.getText().equals(tempName)){
+				    	 notFound = false;
 				    	 try {
-					         Accounts.get(x).Withdraw(Double.parseDouble(depositEntered.getText()));
-					         depositDirections.setFont(new Font("TimesRoman",Font.BOLD,30));
-					         depositDirections.setText("$"+depositEntered.getText()+" Deposited");
+					         Accounts.get(x).Deposit(Double.parseDouble(depositEntered.getText()));
+					         depositDirections.setFont(new Font("TimesRoman",Font.BOLD,20));
+					         depositDirections.setText("$"+depositEntered.getText()+" Deposited. Total Balance is $"+Accounts.get(x).getBalance());
 				    	 }
 				    	 catch(Exception E) {
 				    		 depositDirections.setFont(new Font("TimesRoman",Font.BOLD,20));
@@ -78,6 +80,10 @@ public class User extends JFrame{
 				    	 depositDirections.setFont(new Font("TimesRoman",Font.BOLD,30));
 				         depositDirections.setText("Account "+accountEntered.getText()+" not found");
 				     }
+				}
+				if(notFound) {
+					depositDirections.setFont(new Font("TimesRoman",Font.BOLD,30));
+					depositDirections.setText("Account "+accountEntered.getText()+" not found.");
 				}
 				if(Accounts.size()<=0) {
 					depositDirections.setFont(new Font("TimesRoman",Font.BOLD,30));
@@ -90,7 +96,7 @@ public class User extends JFrame{
 		            	 depositDirections.setFont(new Font("TimesRoman",Font.PLAIN,20));
 		             }
 		         };
-		 		Timer timer = new Timer(1000 ,taskPerformer);
+		 		Timer timer = new Timer(3000 ,taskPerformer);
 		 		timer.setRepeats(false);
 	            timer.setCoalesce(true);
 	            timer.start();
@@ -166,29 +172,30 @@ public class User extends JFrame{
 		withdrawEnter.setFont(new Font("TimesRoman",Font.BOLD,30));
 		withdrawEnter.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
+				boolean notFound = true;
 				for(int x = 0; x<Accounts.size(); x++){
 				     Account temp = Accounts.get(x);
 				  	 String tempName = temp.getName();
 				     if(accountChosen.getText().equals(tempName)){
+				    	 notFound = false;
 				         try {
 					    	 Accounts.get(x).Withdraw(Double.parseDouble(withdrawEntered.getText()));
 					         withdrawDirections.setFont(new Font("TimesRoman",Font.BOLD,20));
-					         withdrawDirections.setText("$"+withdrawEntered.getText()+" Withdrawn");
+					         withdrawDirections.setText("$"+withdrawEntered.getText()+" Withdrawn. Total Balance is $"+Accounts.get(x).getBalance());
 				         }
 				         catch(Exception E) {
 				        	 withdrawDirections.setFont(new Font("TimesRoman",Font.BOLD,20));
 					         withdrawDirections.setText("Please Enter A Numeric Number in the Amount Category");
 				         }
-				     }
-				     else{
-		            	 withdrawDirections.setFont(new Font("TimesRoman",Font.BOLD,30));
-		            	 withdrawDirections.setText("Account "+accountChosen.getText()+" not found");
-				             }
-				     
+				     } 
+				}
+				if(notFound) {
+					withdrawDirections.setFont(new Font("TimesRoman",Font.BOLD,30));
+			        withdrawDirections.setText("Account "+accountChosen.getText()+" not found.");
 				}
 				if(Accounts.size()<=0) {
 					withdrawDirections.setFont(new Font("TimesRoman",Font.BOLD,30));
-			         depositDirections.setText("No Accounts Available");
+			        withdrawDirections.setText("No Accounts Created");
 				}
 				
 				ActionListener taskPerformer = new ActionListener() {
@@ -197,7 +204,7 @@ public class User extends JFrame{
 		            	 withdrawDirections.setFont(new Font("TimesRoman",Font.PLAIN,20));
 		             }
 		         };
-		 		Timer timer = new Timer(1000 ,taskPerformer);
+		 		Timer timer = new Timer(3000 ,taskPerformer);
 		 		timer.setRepeats(false);
 	            timer.setCoalesce(true);
 	            timer.start();
@@ -249,28 +256,30 @@ public class User extends JFrame{
 		transferEnter.setFont(new Font("TimesRoman",Font.BOLD,30));
 		transferEnter.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
+				boolean notFound = true;
 				for(int x = 0; x<Accounts.size(); x++){
 				     Account temp = Accounts.get(x);
-				  	 String tempName = temp.getName();
-				  	 if(accountOne.getText().equals(tempName)){
+				  	 if(accountOne.getText().equals(temp.getName())){
 				  		for(int y = 0; y<Accounts.size(); y++){
 					  		Account temp2 = Accounts.get(y);
-						  	String tempName2 = temp2.getName();
-						  	if(accountTwo.getText().equals(tempName2)){
-						  		temp.TransferFrom(Double.parseDouble(transferEntered.getText()),temp2);
-						  		transferDirections.setText("Transfer Successful.");
-						  		transferDirections.setFont(new Font("TimesRoman",Font.BOLD,30));
+						  	if(accountTwo.getText().equals(temp2.getName())){
+						  		notFound = false;
+						  		try {
+							  		temp.TransferFrom(Double.parseDouble(transferEntered.getText()),temp2);
+							  		transferDirections.setText("Transfer Successful. "+temp.getName()+": $"+temp.getBalance()+" "+temp2.getName()+": $"+temp2.getBalance());
+							  		transferDirections.setFont(new Font("TimesRoman",Font.BOLD,19));
+						  		}
+						  		catch(Exception E) {
+							  		transferDirections.setText("Please Enter a Numeric Value For Amount");
+							  		transferDirections.setFont(new Font("TimesRoman",Font.BOLD,20));
+						  		}
 						  	}
-						  	else{
-						         transferDirections.setText("Account "+accountTwo.getText()+" was not found");
-						         transferDirections.setFont(new Font("TimesRoman",Font.BOLD,30));
-						     }	
 					  	} 
 				     }
-				  	else{
-				         transferDirections.setText("Account "+accountOne.getText()+" was not found");
-				         transferDirections.setFont(new Font("TimesRoman",Font.BOLD,30));
-				  	}
+				}
+				if(notFound) {
+					transferDirections.setText("Accounts Not Found");
+					transferDirections.setFont(new Font("TimesRoman",Font.BOLD,30));
 				}
 				ActionListener taskPerformer = new ActionListener() {
 		             public void actionPerformed(ActionEvent evt) {
@@ -278,7 +287,7 @@ public class User extends JFrame{
 		            	 transferDirections.setFont(new Font("TimesRoman",Font.PLAIN,20));
 		             }
 		         };
-		 		Timer timer = new Timer(1000 ,taskPerformer);
+		 		Timer timer = new Timer(5000 ,taskPerformer);
 		 		timer.setRepeats(false);
 	            timer.setCoalesce(true);
 	            timer.start();
