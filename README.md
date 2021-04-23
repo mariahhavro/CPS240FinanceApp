@@ -1,4 +1,4 @@
-# CPS240FinanceApp
+# Cup O'Java Finance Application
 
 Cup O’ Java Financial Institute is a financial application that uses Java Swing to allow users to view and interact with important financial information. 
 
