@@ -27,14 +27,11 @@ This method accepts an inputted user credit score factors using slider bars and 
 Allows users to View/Manage Debt, view a Debt Payment Plans, Add/Edit Debts and look at debt payment plans. To create a new Debt, a user must input the Name, value, and rate. 
 
 ### Menu
-Main menu - Allows User to login and choose which part of the application they would like to interact with. 
+Allows User to login upon inputting a username and password. A User can also create a password and username if the username they are choosing isn't already in use. From here a user can interact with the tabs to choose which part of the application they would like to interact with. 
 
 ### User 
-Lets the User create bank accounts. With these they can deposit or withdraw money and transfer money to other accounts. 
- 
-### LoanCalc
-The Loan Calculator allows users to create loans of different types and view the loan data.
+Allows the User create bank accounts. The User must input a name and balance to create an account. They can then deposit, withdraw, and transfer money in between accounts. 
 
-### UserSavings
-Stores User Savings information
+### LoanCalc
+The Loan Calculator allows users to create loans of different types and view the loan data. The User must input the amount for the loan, the term, the rate, and the downpay. 
 
