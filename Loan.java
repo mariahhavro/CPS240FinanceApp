@@ -1,5 +1,3 @@
-package app;
-
 public class Loan {
 	String loanName;
 	double loan, years, rate, downPay, monthlyPayment, totalInterestAccrued;
@@ -82,6 +80,6 @@ public class Loan {
 	}
 
 	public String toString() {
-		return "Loan Name: " + loanName + " | Loan Amount: " + loan + " | Term in Years: " + years + " | Interest Rate: %" + rate + " | Down Payment: $" + downPay + " | Monthly Payment : " + monthlyPayment + " | Total Interest Accrued: " + totalInterestAccrued;
+		return "Loan Name: " + loanName + "\nLoan Amount: $" + loan + "\nTerm in Years: " + years + "\nInterest Rate: %" + rate + "\nDown Payment: $" + downPay + "\nMonthly Payment : $" + monthlyPayment + "\nTotal Interest Accrued: $" + totalInterestAccrued + "\n";
 	}
 }
