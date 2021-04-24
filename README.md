@@ -11,6 +11,12 @@ Cup O’ Java Financial Institute is a financial application that uses Java Swin
 
 ## Resources Used
 - How are FICO Scores Calculated? myFICO. (2019, November 19). https://www.myfico.com/credit-education/whats-in-your-credit-score. 
+- Caldwell, M. (2020, November 1). How to Determine the Order of Paying Off Your Debts. The Balance. https://www.thebalance.com/how-do-i-determine-the-order-of-paying-off-my-debts-2385992. 
+- Daugherty, G. (2021, February 2). When to Declare Bankruptcy. Investopedia. https://www.investopedia.com/articles/personal-finance/100714/when-declare-bankruptcy.asp. 
+- Jayakumar, A. (2021, March 16). What Is Debt Consolidation, and Should I Consolidate? NerdWallet. https://www.nerdwallet.com/article/finance/consolidate-debt. 
+- Kasasa. (2021). How to calculate loan payments in 3 easy steps. 					https://www.kasasa.com/blog/how-to-calculate-loan-payments-in-3-easy-steps 
+- Zacks. (2019, August 8). How Is Accrued Interest Calculated? Finance - Zacks. 			https://finance.zacks.com/accrued-interest-calculated-10516.html 
+
 
 ## Running and Installation
 Tested and Verified to work on the IDE Eclipse. In order for the program to run, make sure a folder name "Users" is created under the project folder. This will allow to .txt files for the user to be created and saved. When the application is initially launched, the user will have the option to log in or create a new account. Once logged in, there will be a variety of tabs for the user to use. These include creating bank accounts to handle their savings, a loan calculator to predict interest on loans, a debt management tool and a credit score ratings tool to use. After information is entered in the app, a .txt file will be created for the user in the "Users" folder once the user logs out. The user needs to log out on the log out page for this information to be updated. The .txt file for the user will include their login information, bank account information, and even their debt managment information that has been entered. 
