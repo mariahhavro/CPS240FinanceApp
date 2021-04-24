@@ -1,151 +1,191 @@
 /**
  * This class will give various credit score ratings based on credit score factors 
  * @author Jacob Mackowiak
- *
  */
-public class CreditScoreRatings {
+
+public class CreditScoreRatings  {
+
 
 	/**
-	 * This method gives suggestions to improve credit score using various factors
-	 * @param creditAccounts
-	 * @param availableCredit
-	 * @param creditLength
-	 * @param percentCreditUsed
-	 * @param recentInquiries
-	 * @param percentOnTimePayments
-	 * @return
+	 * This method accepts a user credit score and shows how good their score is
+	 * @param creditScore
+	 * @return Rating
 	 */
-	public static String creditImprovements(int creditAccounts, int availableCredit, int creditLength, 
-			int percentCreditUsed, int recentInquiries, int percentOnTimePayments) {
+	public static String showCreditScoreRating(int creditScore){
 
+
+		if(creditScore <560 && creditScore >=300) {
+			return (": Very Bad");
+		}
+		else if(creditScore >=560 && creditScore < 650) {
+			return (": Bad");
+		}
+		else if(creditScore >=650 && creditScore < 700) {
+			return(": Fair");
+		}
+		else if(creditScore >=700 && creditScore < 750) {
+			return(": Good");
+		}
+		else if(creditScore >=750 && creditScore <= 850) {
+			return(": Great");
+		}
+		else {
+			return "";
+		}
+	}
+
+	/**
+	 * This method takes in a user's number of credit accounts and gives a rating
+	 * @param creditAccounts
+	 * @return Rating
+	 */
+	public static String creditAccountRating(int creditAccounts) {
 		String msg = "";
 
 		//improve creditAccounts
 		if(creditAccounts >=0 && creditAccounts <=2) {
-			msg += "Credit Accounts: Excellent\n";
+			msg += ": Excellent\n";
 		}
 		else if(creditAccounts >=3 && creditAccounts <=4) {
-			msg += "Credit Accounts: Good\n";
+			msg += ": Good\n";
 		}
 		else if(creditAccounts >=5 && creditAccounts <=6) {
-			msg += "Credit Accounts: Average\n";
+			msg += ": Average\n";
 		}
 		else{
-			msg += "Credit Accounts: Below Average\n";
+			msg += ": Below Average\n";
 		}
+		return msg;
+	}
+
+	/**
+	 * This method takes in a user's available credit and gives a rating
+	 * @param availableCredit
+	 * @return Rating
+	 */
+	public static String availableCreditRating(int availableCredit) {
+		String msg = "";
+
 		// improve available credit
 		if(availableCredit >=0 && availableCredit <=2500) {
-			msg += "Available Credit: Below Average\n";
+			msg += ": Below Average\n";
 		}
 		else if(availableCredit >=2500 && availableCredit <=15000) {
-			msg += "Available Credit: Average\n";
+			msg += ": Average\n";
 		}
 		else if(availableCredit >=15000 && availableCredit <=50000) {
-			msg += "Available Credit: Good\n";
+			msg += ": Good\n";
 		}
 		else{
-			msg += "Available Credit: Excellent\n";
-		}
-		// credit length
-		if(creditLength >=0 && creditLength <=2) {
-			msg += "Credit Length: Below Average\n";
-		}
-		else if(creditLength >=3 && creditLength <=7) {
-			msg += "Credit Length: Average\n";
-		}
-		else if(creditLength >=8 && creditLength <=24) {
-			msg += "Credit Length: Good\n";
-		}
-		else{
-			msg += "Credit Length: Excellent\n";
-		}
-		// percentage of credit used
-		if(percentCreditUsed >=61 && percentCreditUsed <=100) {
-			msg += "Credit Used: Below Average\n";
-		}
-		else if(percentCreditUsed >=31 && percentCreditUsed <=60) {
-			msg += "Credit Used: Average\n";
-		}
-		else if(percentCreditUsed >=11 && percentCreditUsed <=30) {
-			msg += "Credit Used: Good\n";
-		}
-		else if(percentCreditUsed >=0 && percentCreditUsed <=10) {
-			msg += "Credit Used: Excellent\n";
-		}
-		// inquiries
-		if(recentInquiries == 0) {
-			msg += "Inquiries: Excellent\n";
-		}
-		else if(recentInquiries >=1 && recentInquiries <=2) {
-			msg += "Inquiries: Good\n";
-		}
-		else if(recentInquiries >=3 && recentInquiries <=5) {
-			msg += "Inquiries: Average \n";
-		}
-		else{
-			msg += "Inquiries: Below Average\n";
-		}
-		// on time payments
-		if(percentOnTimePayments == 100) {
-			msg += "On time payments: Excellent\n";
-		}
-		else if(percentOnTimePayments >=98 && percentOnTimePayments <=99) {
-			msg += "On time payments: Good\n";
-		}
-		else if(percentOnTimePayments >=90 && percentOnTimePayments <=97) {
-			msg += "On time payments: Average \n";
-		}
-		else{
-			msg += "On time payments: Below Average\n";
+			msg += ": Excellent\n";
 		}
 
+		String num= String.format("%,2d", availableCredit);
+		String newmsg = num + msg;
+		return newmsg;
+	}
+	
+	/**
+	 * This method takes in a user's length of credit and gives a rating
+	 * @param creditLength
+	 * @return Rating
+	 */
+	public static String creditLengthRating(int creditLength) {
+
+		String msg = "";
+
+		// credit length
+		if(creditLength >=0 && creditLength <=2) {
+			msg += ": Below Average\n";
+		}
+		else if(creditLength >=3 && creditLength <=7) {
+			msg += ": Average\n";
+		}
+		else if(creditLength >=8 && creditLength <=24) {
+			msg += ": Good\n";
+		}
+		else{
+			msg += ": Excellent\n";
+		}
 
 		return msg;
 	}
 
 	/**
-	 * This method accepts a user credit score and shows how good their score is
-	 * @param creditScore
-	 * @return
-	 * @throws CreditScoreException
+	 * This method takes in a user's amount of credit used and gives a rating
+	 * @param percentCreditUsed
+	 * @return Rating
 	 */
-	public static String showCreditScoreRating(int creditScore) throws CreditScoreException {
+	public static String percentCreditUsedRating(int percentCreditUsed) {
 
-		if(creditScore <300) {
-			throw new CreditScoreException("Invalid Credit Score. Credit Score must be at least 300.");
+		String msg = "";
+
+		// percentage of credit used
+		if(percentCreditUsed >=61 && percentCreditUsed <=100) {
+			msg += "%: Below Average\n";
 		}
-		else if(creditScore <560 && creditScore >=300) {
-			return ("Credit Score: " + creditScore + " --> Very Bad");
+		else if(percentCreditUsed >=31 && percentCreditUsed <=60) {
+			msg += "%: Average\n";
 		}
-		else if(creditScore >=560 && creditScore < 650) {
-			return ("Credit Score: " + creditScore + " --> Bad");
+		else if(percentCreditUsed >=11 && percentCreditUsed <=30) {
+			msg += "%: Good\n";
 		}
-		else if(creditScore >=650 && creditScore < 700) {
-			return("Credit Score: " + creditScore + " --> Fair");
+		else if(percentCreditUsed >=0 && percentCreditUsed <=10) {
+			msg += "%: Excellent\n";
 		}
-		else if(creditScore >=700 && creditScore < 750) {
-			return("Credit Score: " + creditScore + " --> Good");
+
+		return msg;
+	}
+
+	/**
+	 * This method takes in a user's number of recent inquiries and gives a rating
+	 * @param recentInquiries
+	 * @return Rating
+	 */
+	public static String recentInquiriesRating(int recentInquiries) {
+
+		String msg = "";
+		// inquiries
+		if(recentInquiries == 0) {
+			msg += ": Excellent\n";
 		}
-		else if(creditScore >=750 && creditScore <= 850) {
-			return("Credit Score: " + creditScore + " --> Great");
+		else if(recentInquiries >=1 && recentInquiries <=2) {
+			msg += ": Good\n";
 		}
-		else {
-			throw new CreditScoreException("Invalid Credit Score. Credit Score can be at most 850.");
+		else if(recentInquiries >=3 && recentInquiries <=5) {
+			msg += ": Average \n";
 		}
+		else{
+			msg += ": Below Average\n";
+		}
+
+		return msg;
 
 	}
-// this main function is just for testing purposes
-//	public static void main(String [] args) {
-//
-//		try{
-//			String creditScore = showCreditScoreRating(500);
-//			System.out.println(creditScore);
-//		}
-//		catch(CreditScoreException CSE) {
-//			System.out.println(CSE);
-//		}
-//		System.out.println();
-//		String credit = creditImprovements(7,2500,5,5,5,5);
-//		System.out.print(credit);
-//	}
+
+	/**
+	 * This method takes in a user's number of on time payments and gives a rating
+	 * @param percentOnTimePayments
+	 * @return Rating
+	 */
+	public static String percentOnTimePaymentsRating(int percentOnTimePayments) {
+
+		String msg = "";
+
+		// on time payments
+		if(percentOnTimePayments == 100) {
+			msg += "%: Excellent\n";
+		}
+		else if(percentOnTimePayments >=98 && percentOnTimePayments <=99) {
+			msg += "%: Good\n";
+		}
+		else if(percentOnTimePayments >=90 && percentOnTimePayments <=97) {
+			msg += "%: Average \n";
+		}
+		else{
+			msg += "%: Below Average\n";
+		}
+
+		return msg;
+	}
 }

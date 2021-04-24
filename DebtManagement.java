@@ -1,125 +1,554 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.*;
 
-public class DebtManagement {
-	ArrayList<LoanCalc> loans = new ArrayList<LoanCalc>();
+/**
+ * This class represents the debt management tab on the app. Here the user can add existing debts,
+ * get advice on those debts and sort them by rate or size.
+ * @author Mariah Havro
+ *
+ */
+public class DebtManagement extends JFrame {
+	ArrayList<JButton> buttons = new ArrayList<JButton>();
+	ArrayList<JButton> navButtons = new ArrayList<JButton>();
+	ArrayList<JPanel> panels = new ArrayList<JPanel>();
+	ArrayList<JLabel> labels = new ArrayList<JLabel>();
+	ArrayList<Debt> debts = new ArrayList<Debt>();
+	ArrayList<Debt> orderedDebts = new ArrayList<Debt>();
+	CardLayout card;
+	JPanel cardPanel;
+	JTextField jtfName = new JTextField();
+	JTextField jtfValue = new JTextField();
+	JTextField jtfRate = new JTextField();
+	JTextField jtfName2 = new JTextField();
+	JTextField jtfValue2 = new JTextField();
+	JTextField jtfRate2 = new JTextField();
+	JRadioButton jrbRate = new JRadioButton("Sort by rate", false);
+	JRadioButton jrbDebt = new JRadioButton("Sort by Debt", false);
+	JLabel jlbAvgRate = new JLabel();
+	JLabel jlbTotalDebt = new JLabel();
+	JTextArea jtadebtAction = new JTextArea();
+	int iter = 0;
+	double income = 0.0;
+	double totalDebt = 0.0;
+	double averageRate = 0.0;
+	Color maroon = new Color(128, 0, 0);
+	Color gold = new Color(252,205,53);
+	Border btnBorder = BorderFactory.createCompoundBorder(
+			 BorderFactory.createRaisedBevelBorder(), BorderFactory.createLoweredBevelBorder());
+	Border logOut = BorderFactory.createCompoundBorder(
+			 BorderFactory.createLoweredBevelBorder() , BorderFactory.createLineBorder(gold, 5));
+	
+	static User curr = new User();
+	
+	public JComponent DebtManagement() {
 
-	// have user enter all loans (uses LoanCalc) creates a list of loans
-	public void getLoans() {
-		Scanner sc = new Scanner(System.in); // scanner
+		JTextArea jtaDebts = new JTextArea();
+		
+		// Create a welcome panel (shown first on default)
+		JPanel welcomeMenuPanel = new JPanel(new BorderLayout(20, 20));
+		panels.add(welcomeMenuPanel);
+		JLabel jlbWelcomeInstr = new JLabel("Please choose a debt management option:");
+		labels.add(jlbWelcomeInstr);
+		welcomeMenuPanel.add(jlbWelcomeInstr, BorderLayout.NORTH);
 
-		boolean moreLoans = true;// used to determine whether to ask for another loan
+		JButton jbtViewEdit = new JButton("View/Manage Debts");
+		buttons.add(jbtViewEdit);
+		jbtViewEdit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 
-		// values to ask for from user to create loanCalc for list of loans
-		String name = "";
-		double principle = 0.0;
-		double monthlyPayment = 0.0;
-		double presentValue = 0.0;
-		double rate = 0.0;
-		String anotherLoan = "";
-
-		// loops until users replies "No" to last question, creates a new LoanCalc and
-		// adds to list each iteration
-		while (moreLoans) {
-			// get constructor items of LoanCalc
-			System.out.println("Please enter in loan information as prompted... ");
-			System.out.println("Name of Loan: ");
-			name = sc.nextLine();
-
-			System.out.println("Principle: ");
-			principle = sc.nextDouble();
-
-			System.out.println("Monthly Payment: ");
-			monthlyPayment = sc.nextDouble();
-
-			System.out.println("Present Value: ");
-			presentValue = sc.nextDouble();
-
-			System.out.println("Rate: ");
-			rate = sc.nextDouble();
-
-			// Create LoanCalc and add to ArrayList
-			loans.add(new LoanCalc(name, principle, monthlyPayment, presentValue, rate));
-
-			// Check for more Loans, if not end loop by setting boolean moreLoans to false
-			System.out.println("Do you have another loan/debt to enter? (Yes/No)");
-			anotherLoan = sc.next();
-			if (anotherLoan.equalsIgnoreCase("No")){
-				moreLoans = false;
+				jtaDebts.setText("");
+				
+				debts = curr.getDebts();
+				
+				for (int x = 0; x < debts.size(); x++) {
+					jtaDebts.append(debts.get(x) + "\n");	
+				}
+				
+				card.show(cardPanel, "View/Edit");
 			}
-		}
-	}
+		});
 
-	public void determineTotalDebtActions() {
-		double totalDebt = 0.0;
-		double sumRate = 0.0;
-		double averageRate = 0.0;
-		double extremeDebt = 500.00;
-		double extremeRate = 40.0;
+		JButton jbtDebtActions = new JButton("Overall Debt Actions");
+		buttons.add(jbtDebtActions);
+		jbtDebtActions.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				card.show(cardPanel, "Debt Action");
+			}
+		});
 
-		// Add up total loan values
-		for (int i = 0; i < loans.size(); i++) {
-			totalDebt += loans.getPresentValue();
-			sumRate += loans.getRate();
-		}
-		averageRate = totalRate / loans.size();
+		JButton jbtDebtPayment = new JButton("Debt Payment Plans");
+		buttons.add(jbtDebtPayment);
+		jbtDebtPayment.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				card.show(cardPanel, "Debt Payments");
+			}
+		});
+		// welcome grid to hold main 3 buttons
+		JPanel welcomeBtnGrid = new JPanel(new GridLayout(3, 1));
+		panels.add(welcomeBtnGrid);
+		welcomeBtnGrid.add(jbtViewEdit);
+		welcomeBtnGrid.add(jbtDebtActions);
+		welcomeBtnGrid.add(jbtDebtPayment);
+		welcomeMenuPanel.add(welcomeBtnGrid, BorderLayout.CENTER);
 
-		if (totalDebt >= extremeDebt) {
-			// recommend change i.e. bankruptcy, consolidation
-		}
+		JButton jbtMainMenu = new JButton("Log Out");
+		navButtons.add(jbtMainMenu);
+		jbtMainMenu.setBackground(Color.white);
+		jbtMainMenu.setForeground(maroon);
+		jbtMainMenu.setBorder(logOut);
+		welcomeMenuPanel.add(jbtMainMenu, BorderLayout.SOUTH);
 
-		if (averageRate >= extremeRate) {
-			// recommend change i.e. bankruptcy, consolidation
-		}
-	}
 
-	// determine two methods of paying off loans, smallest debts first, or highest
-	// rate first. Returns list
-	public ArrayList<LoanCalc> determineDebtPaymentPlan() {
-		//intialize lists to be returned, will only return one.
-		ArrayList<LoanCalc> loansByRate = loans;
-		ArrayList<LoanCalc> loansByDebt = loans;
+		// navigation panel to be used on all panels but main
+		JButton jbtDebtMenu1 = new JButton("Debt Manager Menu");
+		navButtons.add(jbtDebtMenu1);
+		JButton jbtMainMenu1 = new JButton("Main Menu");
+		navButtons.add(jbtMainMenu1);
+		JPanel menuBtnGrid1 = new JPanel(new GridLayout(1, 2));
+		panels.add(menuBtnGrid1);
+		menuBtnGrid1.add(jbtDebtMenu1);
+		menuBtnGrid1.add(jbtMainMenu1);
+		jbtDebtMenu1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				card.show(cardPanel, "Welcome");
+			}
+		});
+
+		// navigation panel to be used on all panels but main
+		JButton jbtDebtMenu2 = new JButton("Debt Manager Menu");
+		navButtons.add(jbtDebtMenu2);
+		JButton jbtMainMenu2 = new JButton("Main Menu");
+		navButtons.add(jbtMainMenu2);
+		JPanel menuBtnGrid2 = new JPanel(new GridLayout(1, 2));
+		panels.add(menuBtnGrid2);
+		menuBtnGrid2.add(jbtDebtMenu2);
+		menuBtnGrid2.add(jbtMainMenu2);
+		jbtDebtMenu2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				card.show(cardPanel, "Welcome");
+			}
+		});
+		// navigation panel to be used on all panels but main
+		JButton jbtDebtMenu3 = new JButton("Debt Manager Menu");
+		navButtons.add(jbtDebtMenu3);
+		JButton jbtMainMenu3 = new JButton("Main Menu");
+		navButtons.add(jbtMainMenu3);
+		JPanel menuBtnGrid3 = new JPanel(new GridLayout(1, 2));
+		panels.add(menuBtnGrid3);
+		menuBtnGrid3.add(jbtDebtMenu3);
+		menuBtnGrid3.add(jbtMainMenu3);
+		jbtDebtMenu3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				card.show(cardPanel, "Welcome");
+			}
+		});
+
+
+		// Create a panel to edit/view/add debts
+		JPanel viewEditDebtsPanel = new JPanel(new BorderLayout());
+		panels.add(viewEditDebtsPanel);
+		JLabel jlbViewEditInstr = new JLabel("Please select from list to edit, or choose add option");
+		labels.add(jlbViewEditInstr);
+		JButton jbtAdd = new JButton("Add");
+		buttons.add(jbtAdd);
+		jbtAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				card.show(cardPanel, "Add Debt");
+			}
+		});
+		JButton jbtEditDelete = new JButton("Edit/Delete");
+		buttons.add(jbtEditDelete);
+		jbtEditDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				card.show(cardPanel, "Edit/Delete Debt");
+				iter = 0;
+				jtfName2.setText(debts.get(iter).getName());
+				jtfValue2.setText(Double.toString(debts.get(iter).getPresentValue()));
+				jtfRate2.setText(Double.toString(debts.get(iter).getRate()));
+			}
+		});
 		
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Do you want to pay off by highest rate or smallest debt? (Debt/Rate)?");
-		String method = sc.next();
+		jtaDebts.setEditable(false);
+		viewEditDebtsPanel.add(jlbViewEditInstr, BorderLayout.NORTH);
+		viewEditDebtsPanel.add(jbtAdd, BorderLayout.WEST);
+		viewEditDebtsPanel.add(menuBtnGrid1, BorderLayout.SOUTH);
+		viewEditDebtsPanel.add(jbtEditDelete, BorderLayout.EAST);
+		viewEditDebtsPanel.add(jtaDebts, BorderLayout.CENTER);
+
 		
-		//Sort by smallest debts using selection sort, return that ordered list
-		if (method.equals("Debt") || method.equals("debt") || method.equals("DEBT")) {
-			for(int i = 0; i < loansByDebt.size()-1; i++) {
-				int minIndex = i;
-				for(int j = i + 1; j < loansByDebt.size(); j++) {
-					if((loansByDebt.get(j)).getPresentValue() < (loansByDebt.get(minIndex)).getPresentValue()) {
-						minIndex = j;
+		//Create a panel to add debts
+		JPanel addDebtPanel = new JPanel(new BorderLayout());
+		panels.add(addDebtPanel);
+		JLabel jlbAddDebtInstr = new JLabel("Please fill in the information below, then hit submit");
+		labels.add(jlbAddDebtInstr);
+		JButton jbtCancel = new JButton("Cancel");
+		buttons.add(jbtCancel);
+		JButton jbtSubmit = new JButton("Submit");
+		buttons.add(jbtSubmit);
+		addDebtPanel.add(jlbAddDebtInstr, BorderLayout.NORTH);
+		JPanel canSubGrid = new JPanel(new GridLayout(1,2));
+		panels.add(canSubGrid);
+		canSubGrid.add(jbtCancel);
+		jbtCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				jtfName.setText("");
+				jtfValue.setText("");
+				jtfRate.setText("");
+				card.show(cardPanel, "View/Edit");
+			}
+		});
+		canSubGrid.add(jbtSubmit);
+		jbtSubmit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				debts.add(new Debt(jtfName.getText(), Double.parseDouble(jtfValue.getText()), Double.parseDouble(jtfRate.getText())));
+				jtaDebts.append(debts.get(debts.size() - 1) + "\n");
+				jtfName.setText("");
+				jtfValue.setText("");
+				jtfRate.setText("");
+				card.show(cardPanel, "View/Edit");
+
+			}
+		});
+		addDebtPanel.add(canSubGrid, BorderLayout.SOUTH);
+		JPanel addGrid = new JPanel(new GridLayout(3,2));
+		panels.add(addGrid);
+		JLabel jlbName = new JLabel("Name: ");
+		labels.add(jlbName);
+		JLabel jlbValue = new JLabel("Present Value Owed: ");
+		labels.add(jlbValue);
+		JLabel jlbRate = new JLabel("Interest Rate: ");
+		labels.add(jlbRate);
+		addGrid.add(jlbName);
+		addGrid.add(jtfName);
+		addGrid.add(jlbValue);
+		addGrid.add(jtfValue);
+		addGrid.add(jlbRate);
+		addGrid.add(jtfRate);
+		addDebtPanel.add(addGrid,BorderLayout.CENTER);
+
+		
+		//Create a panel to delete and edit debts
+		JPanel editDeleteDebtPanel = new JPanel(new BorderLayout());
+		panels.add(editDeleteDebtPanel);
+		JLabel jlbEditDeleteDebtInstr = new JLabel("Please fill in the information below, then hit submit");
+		labels.add(jlbEditDeleteDebtInstr);
+		JButton jbtDone = new JButton("Done");
+		buttons.add(jbtDone);
+		JButton jbtEdit = new JButton("SaveChanges");
+		buttons.add(jbtEdit);
+		JButton jbtDelete = new JButton("Delete");
+		buttons.add(jbtDelete);
+		JButton jbtPrev = new JButton("<");
+		buttons.add(jbtPrev);
+		jbtPrev.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(iter ==0) {
+					iter = debts.size() - 1;
+				}else {
+					iter--;
+				}
+				jtfName2.setText(debts.get(iter).getName());
+				jtfValue2.setText(Double.toString(debts.get(iter).getPresentValue()));
+				jtfRate2.setText(Double.toString(debts.get(iter).getRate()));
+			}
+		});
+		JButton jbtNext = new JButton(">");
+		buttons.add(jbtNext);
+		jbtNext.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(iter == debts.size() -1) {
+					iter = 0;
+				}else {
+					iter++;
+				}
+				jtfName2.setText(debts.get(iter).getName());
+				jtfValue2.setText(Double.toString(debts.get(iter).getPresentValue()));
+				jtfRate2.setText(Double.toString(debts.get(iter).getRate()));
+			}
+		});
+		editDeleteDebtPanel.add(jlbEditDeleteDebtInstr, BorderLayout.NORTH);
+		editDeleteDebtPanel.add(jbtPrev, BorderLayout.WEST);
+		editDeleteDebtPanel.add(jbtNext, BorderLayout.EAST);
+		JPanel canSubGrid2 = new JPanel(new GridLayout(1,3));
+		canSubGrid2.add(jbtDone);
+		jbtDone.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//update the textArea, then return to View/Edit Card
+				jtaDebts.setText("");
+				for(int i = 0; i < debts.size(); i++) {
+					jtaDebts.append(debts.get(i) + "\n");
+				}
+				card.show(cardPanel, "View/Edit");
+			}
+		});
+		canSubGrid2.add(jbtEdit);
+		canSubGrid2.add(jbtDelete);
+		jbtEdit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				debts.get(iter).setName(jtfName2.getText());
+				debts.get(iter).setPresentValue(Double.parseDouble(jtfValue2.getText()));
+				debts.get(iter).setRate(Double.parseDouble(jtfRate2.getText()));
+			}
+		});
+		jbtDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//remove from ArrayList Debts, then perform "Next" action
+				debts.remove(iter);
+				if(iter != 0) {
+					iter--;
+				}
+				else if(debts.size() == 0) {
+					jtaDebts.setText("");
+					for(int i = 0; i < debts.size(); i++) {
+						jtaDebts.append(debts.get(i) + "\n");
+					}
+					card.show(cardPanel, "View/Edit");
+					return;
+				}
+				jtfName2.setText(debts.get(iter).getName());
+				jtfValue2.setText(Double.toString(debts.get(iter).getPresentValue()));
+				jtfRate2.setText(Double.toString(debts.get(iter).getRate()));
+			}
+		});
+		editDeleteDebtPanel.add(canSubGrid2, BorderLayout.SOUTH);
+		JPanel editDeleteGrid = new JPanel(new GridLayout(3,2));
+		panels.add(editDeleteGrid);
+		JLabel jlbName2 = new JLabel("Name: ");
+		labels.add(jlbName2);
+		JLabel jlbValue2 = new JLabel("Present Value Owed: ");
+		labels.add(jlbValue2);
+		JLabel jlbRate2 = new JLabel("Interest Rate: ");
+		labels.add(jlbRate2);
+		editDeleteGrid.add(jlbName2);
+		editDeleteGrid.add(jtfName2);
+		editDeleteGrid.add(jlbValue2);
+		editDeleteGrid.add(jtfValue2);
+		editDeleteGrid.add(jlbRate2);
+		editDeleteGrid.add(jtfRate2);
+		editDeleteDebtPanel.add(editDeleteGrid,BorderLayout.CENTER);
+		
+		// Create a panel to determine debt actions
+		JPanel debtActionPanel = new JPanel(new BorderLayout());
+		panels.add(debtActionPanel);
+		JLabel jlbIncome = new JLabel("Please enter income and submit to recieve advise on extreme debt actions:");
+		labels.add(jlbIncome);
+		JButton jbtIncomeSubmit = new JButton("Submit");
+		buttons.add(jbtIncomeSubmit);
+		JTextField jtfIncome = new JTextField();
+		jbtIncomeSubmit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				jtadebtAction.setText(determineTotalDebtActions());
+				jlbTotalDebt.setText("Total Debt: " + Double.toString(totalDebt));
+				jlbAvgRate.setText("Average Interest Rate from Debts: " + Double.toString(averageRate));
+			}
+		});
+		JTextArea jtadebtActionInstr = new JTextArea(
+				"Below, your total debt and average interest rate will be displayed. This is calculated"
+						+ " from the debts you have added to the debt management module.");
+		jtadebtActionInstr.setLineWrap(true);
+		jtadebtActionInstr.setEditable(false);
+		jtadebtAction.setLineWrap(true);
+		jtadebtAction.setEditable(false);
+		JPanel incomeGrid = new JPanel(new GridLayout(3,1));
+		panels.add(incomeGrid);
+		incomeGrid.add(jlbIncome);
+		incomeGrid.add(jtfIncome);
+		incomeGrid.add(jbtIncomeSubmit);
+		JPanel totalsGrid = new JPanel(new GridLayout(2,1));
+		panels.add(totalsGrid);
+		totalsGrid.add(jlbTotalDebt);
+		totalsGrid.add(jlbAvgRate);
+		debtActionPanel.add(jtadebtActionInstr, BorderLayout.NORTH);
+		debtActionPanel.add(totalsGrid, BorderLayout.EAST);
+		debtActionPanel.add(incomeGrid, BorderLayout.WEST);
+		debtActionPanel.add(jtadebtAction, BorderLayout.CENTER);
+		debtActionPanel.add(menuBtnGrid2, BorderLayout.SOUTH);
+
+		// Create a panel to show the order to pay off debts
+		JPanel debtPaymentsPanel = new JPanel(new BorderLayout());
+		panels.add(debtPaymentsPanel);
+		JLabel jlbdebtPaymentInstr = new JLabel(
+				"Please select a debt payment priority, then your debts will be ordered in which to focus on paying first");
+		labels.add(jlbdebtPaymentInstr);
+		debtPaymentsPanel.add(jlbdebtPaymentInstr, BorderLayout.NORTH);
+		JTextArea jtaOrderedDebts = new JTextArea();
+		debtPaymentsPanel.add(jtaOrderedDebts, BorderLayout.CENTER);
+		debtPaymentsPanel.add(menuBtnGrid3, BorderLayout.SOUTH);
+		JButton jbtSort = new JButton("Sort");
+		buttons.add(jbtSort);
+		JPanel jrbGrid = new JPanel(new GridLayout(3, 1));
+		panels.add(jrbGrid);
+		jrbGrid.add(jrbRate);
+		jrbGrid.add(jrbDebt);
+		jrbGrid.add(jbtSort);
+		jbtSort.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				orderedDebts = determineDebtPaymentPlan();
+				jtaOrderedDebts.setText("");
+				for(int i = 0; i < orderedDebts.size(); i++) {
+					jtaOrderedDebts.append(orderedDebts.get(i) + "\n");
+				}
+				
+			}
+		});
+		debtPaymentsPanel.add(jrbGrid, BorderLayout.WEST);
+		
+		//Appearance changes
+		Font buttonFont = new Font(Font.SANS_SERIF, Font.CENTER_BASELINE, 15);
+		Font labelFont = new Font(Font.SANS_SERIF, Font.CENTER_BASELINE, 15);
+		//buttons
+		for(int i = 0; i < buttons.size(); i++) {
+			buttons.get(i).setBackground(gold);
+			buttons.get(i).setForeground(maroon);
+			buttons.get(i).setBorder(btnBorder);
+			buttons.get(i).setFont(buttonFont);
+		}
+		//navigation buttons
+		for(int i = 0; i < navButtons.size(); i++) {
+			navButtons.get(i).setBackground(Color.white);
+			navButtons.get(i).setForeground(maroon);
+			navButtons.get(i).setBorder(btnBorder);
+			navButtons.get(i).setFont(buttonFont);
+		}
+		//labels
+		labels.add(jlbAvgRate);
+		labels.add(jlbTotalDebt);
+		for(int i = 0; i < labels.size(); i++) {
+			labels.get(i).setBackground(maroon);
+			labels.get(i).setForeground(Color.white);
+			labels.get(i).setFont(labelFont);
+		}
+		//panels
+		for(int i = 0; i < panels.size(); i++) {
+			panels.get(i).setBackground(maroon);
+		}
+		//radio buttons
+		jrbRate.setBackground(maroon);
+		jrbRate.setForeground(Color.white);
+		jrbRate.setFont(buttonFont);
+		jrbDebt.setBackground(maroon);
+		jrbDebt.setForeground(Color.white);
+		jrbDebt.setFont(buttonFont);
+
+		// Create card layout pane and add panels
+		card = new CardLayout();
+		cardPanel = new JPanel(card);
+		cardPanel.add(welcomeMenuPanel, "Welcome");
+		cardPanel.add(viewEditDebtsPanel, "View/Edit");
+		cardPanel.add(debtActionPanel, "Debt Action");
+		cardPanel.add(debtPaymentsPanel, "Debt Payments");
+		cardPanel.add(addDebtPanel, "Add Debt");
+		cardPanel.add(editDeleteDebtPanel, "Edit/Delete Debt");
+
+		// add to frame
+/*		add(cardPanel);
+		setTitle("Debt Manager");
+		setLocationRelativeTo(null); // center the frame
+		setSize(320, 250);
+		setVisible(true);*/
+		return cardPanel;
+	}
+	
+	
+	/** Determine two methods of paying off loans, smallest debts first, or highest rate first. 
+	 * 
+	 * @return list
+	 */
+		public ArrayList<Debt> determineDebtPaymentPlan() {
+			// initialize lists to be returned, will only return one.
+			ArrayList<Debt> loansByRate = debts;
+			ArrayList<Debt> loansByDebt = debts;
+
+			
+
+			// Sort by smallest debts using selection sort, return that ordered list
+			if (jrbRate.isSelected()) {
+				for (int i = 0; i < loansByDebt.size() - 1; i++) {
+					int minIndex = i;
+					for (int j = i + 1; j < loansByDebt.size(); j++) {
+						if ((loansByDebt.get(j)).getPresentValue() < (loansByDebt.get(minIndex)).getPresentValue()) {
+							minIndex = j;
+						}
+					}
+					if (minIndex != i) {
+						Debt temp = new Debt(); // temporary variable for swapping
+						temp = loansByDebt.get(minIndex);
+						loansByDebt.set(minIndex, loansByDebt.get(i));
+						loansByDebt.set(i, temp);
 					}
 				}
-				if(minIndex != i) {
-					LoanCalc temp = new LoanCalc(); //temporary variable for swapping
-					temp = loansByDebt.get(minIndex);
-					loansByDebt.set(minIndex, loansByDebt.get(i));
-					loansByDebt.set(i, temp);
-				}
+				return loansByDebt;
 			}
-			return loansByDebt;
-		}
-		//Sort by highest rates using selection sort, return that ordered list
-		if (method.equals("Rate") || method.equals("rate") || method.equals("RATE")) {
-			for(int i = 0; i < loansByRate.size()-1; i++) {
-				int minIndex = i;
-				for(int j = i + 1; j < loansByRate.size(); j++) {
-					if((loansByRate.get(j)).getRate() < (loansByRate.get(minIndex)).getRate()) {
-						minIndex = j;
+			// Sort by highest rates using selection sort, return that ordered list
+			else if(jrbDebt.isSelected()) {
+				for (int i = 0; i < loansByRate.size() - 1; i++) {
+					int minIndex = i;
+					for (int j = i + 1; j < loansByRate.size(); j++) {
+						if ((loansByRate.get(j)).getRate() < (loansByRate.get(minIndex)).getRate()) {
+							minIndex = j;
+						}
+					}
+					if (minIndex != i) {
+						Debt temp = new Debt(); // temporary variable for swapping
+						temp = loansByRate.get(minIndex);
+						loansByRate.set(minIndex, loansByRate.get(i));
+						loansByRate.set(i, temp);
 					}
 				}
-				if(minIndex != i) {
-					LoanCalc temp = new LoanCalc(); //temporary variable for swapping
-					temp = loansByRate.get(minIndex);
-					loansByRate.set(minIndex, loansByRate.get(i));
-					loansByRate.set(i, temp);
-				}
+				return loansByRate;
 			}
-			return loansByRate;
+			else {
+				return loansByRate; //have an error message to choose one
+			}
 		}
+		
+		/**
+		 * Determines the action to be taken for a specific debt. 
+		 * @return
+		 */
+		public String determineTotalDebtActions() {
+			double sumRate = 0.0;
+			double extremeDebtPerc = 0.46;
+			double extremeRate = 40.0;
+			
+
+			// Add up total loan values
+			for (int i = 0; i < debts.size(); i++) {
+				totalDebt += debts.get(i).getPresentValue();
+				sumRate += debts.get(i).getRate();
+			}
+			averageRate = sumRate / debts.size();
+
+			if (totalDebt >= income*extremeDebtPerc) {
+				return "Due to the high amount of total debt, it is recommended to look into filing for"
+						+ " Bankruptcy. This is recommended even further if you are in danger of foreclosure"
+						+ " or are begin harassed by bill collectors.";
+			}else if (averageRate >= extremeRate) {
+				return "Due to the high average rate of interest from all of your debt, it is recommended to look into getting"
+						+ " a consolidation loan. This is recommended even further if you are have very high monthly payments"
+						+ " on your current loans.";
+			}else {
+				return "With the current debts you have entered, it is not recommeneded for you to file for Bankruptcy"
+						+ " or get a consolidation loan.";
+			}
+		}
+	
+	public static void main(String[] args) {
+		JFrame frame = new DebtManagement(); 
+
 	}
+
+
 
 }
