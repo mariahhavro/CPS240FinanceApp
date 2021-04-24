@@ -1,0 +1,246 @@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.border.*;
+/**
+ * This class give various credit score ratings based on credit score factors.
+ * The user will be able to enter credit score factors using slider bars.
+ * @author Jacob Mackowiak
+ *
+ */
+public class CreditScoreSwing {
+
+	/**
+	 * This method creates a JComponent from the CreditScoreRatings.java
+	 * @return JComponent credit ratings tab for user options
+	 */
+	public static JComponent CreditScoreTab() {
+		
+		// create JComponents
+		JSlider jslcreditAccounts = new JSlider(0, 15, 0);
+		JSlider jslavailableCredit = new JSlider(0, 70000, 0);
+		JSlider jslcreditLength = new JSlider(0,100,0);
+		JSlider jslpercentCreditUsed = new JSlider(0,100,0);
+		JSlider jslrecentInquiries = new JSlider(0,10,0);
+		JSlider jslpercentOnTimePayments = new JSlider(0,100,0);
+		JSlider jslcreditScore = new JSlider(300,850,300);
+
+		JTextField jtfcreditAccountsRating = new JTextField();
+		JTextField jtfavailableCreditRating = new JTextField();
+		JTextField jtfcreditLengthRating = new JTextField();
+		JTextField jtfpercentCreditUsedRating = new JTextField();
+		JTextField jtfrecentInquiriesRating = new JTextField();
+		JTextField jtfpercentOnTimePaymentsRating = new JTextField();
+		JTextField jtfcreditScoreRating = new JTextField();
+
+		// Set text fields to false
+		jtfcreditAccountsRating.setEditable(false);
+		jtfavailableCreditRating.setEditable(false);
+		jtfcreditLengthRating.setEditable(false);
+		jtfpercentCreditUsedRating.setEditable(false);
+		jtfrecentInquiriesRating.setEditable(false);
+		jtfpercentOnTimePaymentsRating.setEditable(false);
+		jtfcreditScoreRating.setEditable(false);
+
+		setSliderTicMarks(jslcreditAccounts, jslavailableCredit, jslcreditLength, 
+				jslpercentCreditUsed, jslrecentInquiries, jslpercentOnTimePayments, jslcreditScore);
+		
+		// Create jpanel to add sliders and textfields
+		Color gold = new Color(252, 205, 53);
+		JPanel p1 = new JPanel(new GridLayout(7, 3));
+		JLabel creditAccounts = new JLabel("Credit Accounts");
+		creditAccounts.setForeground(gold);
+		JLabel availableCredit = new JLabel("Available Credit (x10^3)");
+		availableCredit.setForeground(gold);
+		JLabel creditLength = new JLabel("Credit Length (years)");
+		creditLength.setForeground(gold);
+		JLabel creditUsed = new JLabel("Credit Used (%)");
+		creditUsed.setForeground(gold);
+		JLabel inquires = new JLabel("Recent Inquiries");
+		inquires.setForeground(gold);
+		JLabel payments = new JLabel("On time payments (%)");
+		payments.setForeground(gold);
+		JLabel creditScore = new JLabel("Credit Score");
+		creditScore.setForeground(gold);
+		TitledBorder factors = new TitledBorder("Enter credit score factors");
+		factors.setTitleColor(gold);
+		JLabel [] ratings = new JLabel[7];
+		
+		for(int i =0; i< ratings.length;i++) {
+			ratings[i] = new JLabel("                       Rating:");
+			ratings[i].setForeground(gold);
+		}
+		
+		p1.add(creditAccounts);
+		p1.add(jslcreditAccounts);
+		p1.add(ratings[0]);
+		p1.add(jtfcreditAccountsRating);
+		p1.add(availableCredit);
+		p1.add(jslavailableCredit);
+		p1.add(ratings[1]);
+		p1.add(jtfavailableCreditRating);
+		p1.add(creditLength);
+		p1.add(jslcreditLength);
+		p1.add(ratings[2]);
+		p1.add(jtfcreditLengthRating);
+		p1.add(creditUsed);
+		p1.add(jslpercentCreditUsed );
+		p1.add(ratings[3]);
+		p1.add(jtfpercentCreditUsedRating);
+		p1.add(inquires);
+		p1.add(jslrecentInquiries );
+		p1.add(ratings[4]);
+		p1.add(jtfrecentInquiriesRating);
+		p1.add(payments);
+		p1.add(jslpercentOnTimePayments);
+		p1.add(ratings[5]);
+		p1.add(jtfpercentOnTimePaymentsRating);
+		p1.add(creditScore);
+		p1.add(jslcreditScore);
+		p1.add(ratings[6]);
+		p1.add(jtfcreditScoreRating);
+		
+		p1.setBorder(factors);
+		
+
+		p1.setBackground(new Color(128,0,0));
+
+		//Lambda expression
+		//Credit Accounts
+		jslcreditAccounts.addChangeListener(e -> {
+			if(e.getSource() instanceof JSlider) {
+				JSlider source = (JSlider) e.getSource();
+				if (!source.getValueIsAdjusting()) {
+					int num = source.getValue();
+					String rating = CreditScoreRatings.creditAccountRating(num);
+					jtfcreditAccountsRating.setText(num + "" + rating);
+				} 
+			}
+		});
+
+		//Available Credit
+		jslavailableCredit.addChangeListener(e -> {
+			if(e.getSource() instanceof JSlider) {
+				JSlider source = (JSlider) e.getSource();
+				if (!source.getValueIsAdjusting()) {
+					int num = source.getValue();
+					String rating = CreditScoreRatings.availableCreditRating(num);
+
+					jtfavailableCreditRating.setText("$" + rating);
+				} 
+			}
+		});
+
+		//Credit Length
+		jslcreditLength.addChangeListener(e -> {
+			if(e.getSource() instanceof JSlider) {
+				JSlider source = (JSlider) e.getSource();
+				if (!source.getValueIsAdjusting()) {
+					int num = source.getValue();
+					String rating = CreditScoreRatings.creditLengthRating(num);
+					jtfcreditLengthRating.setText(num + "" + rating);
+				} 
+			}
+		});
+
+		//Percent Credit Used
+		jslpercentCreditUsed.addChangeListener(e -> {
+			if(e.getSource() instanceof JSlider) {
+				JSlider source = (JSlider) e.getSource();
+				if (!source.getValueIsAdjusting()) {
+					int num = source.getValue();
+					String rating = CreditScoreRatings.percentCreditUsedRating(num);
+					jtfpercentCreditUsedRating.setText(num + "" + rating);
+				} 
+			}
+		});
+
+		//Recent Inquiries
+		jslrecentInquiries.addChangeListener(e -> {
+			if(e.getSource() instanceof JSlider) {
+				JSlider source = (JSlider) e.getSource();
+				if (!source.getValueIsAdjusting()) {
+					int num = source.getValue();
+					String rating = CreditScoreRatings.recentInquiriesRating(num);
+					jtfrecentInquiriesRating.setText(num + "" + rating);
+				} 
+			}
+		});
+
+		//Percent On time payments
+		jslpercentOnTimePayments.addChangeListener(e -> {
+			if(e.getSource() instanceof JSlider) {
+				JSlider source = (JSlider) e.getSource();
+				if (!source.getValueIsAdjusting()) {
+					int num = source.getValue();
+					String rating = CreditScoreRatings.percentOnTimePaymentsRating(num);
+					jtfpercentOnTimePaymentsRating.setText(num + "" + rating);
+				} 
+			}
+		});
+
+		//Credit Score
+		jslcreditScore.addChangeListener(e -> {
+			if(e.getSource() instanceof JSlider) {
+				JSlider source = (JSlider) e.getSource();
+				if (!source.getValueIsAdjusting()) {
+					int num = source.getValue();
+					String rating = CreditScoreRatings.showCreditScoreRating(num);
+					jtfcreditScoreRating.setText(num + "" + rating);
+				} 
+			}
+		});
+
+		return p1;
+
+	}
+	
+	/**
+	 * This method sets the tic marks for the different JSliders on the panel
+	 * @param jslcreditAccounts
+	 * @param jslavailableCredit
+	 * @param jslcreditLength
+	 * @param jslpercentCreditUsed
+	 * @param jslrecentInquiries
+	 * @param jslpercentOnTimePayments
+	 * @param jslcreditScore
+	 */
+	public static void setSliderTicMarks(JSlider jslcreditAccounts, JSlider jslavailableCredit, JSlider jslcreditLength, 
+			JSlider jslpercentCreditUsed, JSlider jslrecentInquiries, JSlider jslpercentOnTimePayments, JSlider jslcreditScore) {
+		jslcreditAccounts.setMajorTickSpacing(5);
+		jslcreditAccounts.setMinorTickSpacing(1);
+		jslcreditAccounts.setPaintTicks(true);
+		jslcreditAccounts.setPaintLabels(true);
+
+		jslavailableCredit.setMajorTickSpacing(35000);
+		jslavailableCredit.setMinorTickSpacing(7000);
+		jslavailableCredit.setPaintTicks(true);
+		jslavailableCredit.setPaintLabels(true);
+
+		jslcreditLength.setMajorTickSpacing(50);
+		jslcreditLength.setMinorTickSpacing(10);
+		jslcreditLength.setPaintTicks(true);
+		jslcreditLength.setPaintLabels(true);
+
+		jslpercentCreditUsed.setMajorTickSpacing(50);
+		jslpercentCreditUsed.setMinorTickSpacing(10);
+		jslpercentCreditUsed.setPaintTicks(true);
+		jslpercentCreditUsed.setPaintLabels(true);
+
+		jslrecentInquiries.setMajorTickSpacing(5);
+		jslrecentInquiries.setMinorTickSpacing(1);
+		jslrecentInquiries.setPaintTicks(true);
+		jslrecentInquiries.setPaintLabels(true);
+
+		jslpercentOnTimePayments.setMajorTickSpacing(50);
+		jslpercentOnTimePayments.setMinorTickSpacing(10);
+		jslpercentOnTimePayments.setPaintTicks(true);
+		jslpercentOnTimePayments.setPaintLabels(true);
+
+		jslcreditScore.setMajorTickSpacing(125);
+		jslcreditScore.setMinorTickSpacing(100);
+		jslcreditScore.setPaintTicks(true);
+		jslcreditScore.setPaintLabels(true);
+	}
+}
