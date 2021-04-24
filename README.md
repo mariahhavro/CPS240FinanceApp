@@ -32,6 +32,12 @@ Allows User to login upon inputting a username and password. A User can also cre
 ### User 
 Allows the User create bank accounts. The User must input a name and balance to create an account. They can then deposit, withdraw, and transfer money in between accounts. 
 
-### LoanCalc
+### LoanCalcSwing
 The Loan Calculator allows users to create loans of different types and view the loan data. The User must input the amount for the loan, the term, the rate, and the downpay. 
+
+### Loan
+The Loan class is an underlying class used for the LoanCalcSwing class.
+
+### UserSwing
+The User Swing class is a GUI for the User class.
 
