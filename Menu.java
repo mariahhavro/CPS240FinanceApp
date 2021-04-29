@@ -146,7 +146,7 @@ public class Menu extends JFrame {
 
 				// If the username is taken, do this
 				// Add in error message to show via swing, right now it only erases entries
-				if (userTaken == true) {
+				if (userTaken == true || newUserName.getText().isBlank()) {
 					
 				}
 				// Otherwise, create a new user and add them to the database
