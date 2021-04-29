@@ -2,17 +2,21 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.AbstractButton;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
+import javax.swing.border.Border;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 
 /**
  * This is GUI for the User class
@@ -37,6 +41,9 @@ public class UserSwing extends JComponent{
 	
 	Color maroon = new Color(128, 0, 0);
 	Color gold = new Color(252,205,53);
+	
+	Border line = BorderFactory.createLineBorder(maroon);
+	Border raisedbevel = BorderFactory.createRaisedBevelBorder();
 	
 	int buttonsPressed;
 	
@@ -102,16 +109,43 @@ public class UserSwing extends JComponent{
 		for (int i = 0; i < curr.getAccounts().size(); i++) {
 			
 			String label = String.format("%-60s$%-10.2f", curr.getAccounts().get(i).name, curr.getAccounts().get(i).balance);
-			JToggleButton jtb = new JToggleButton(label);
+			JToggleButton jtb = new AccToggle();
+			jtb.setText(label);
 			jtb.setName(curr.getAccounts().get(i).name);
 			jtb.setPreferredSize(new Dimension(400, 85));
 			jtb.addActionListener(actionListener);
+			
+			jtb.setFont(new Font(Font.SANS_SERIF, Font.CENTER_BASELINE, 12));
+			
+			jtb.setBackground(gold);
+			jtb.setForeground(maroon);
+			jtb.setBorder(line);
 			
 			accGrid.add(jtb);
 			
 		}
 		
+		accGrid.setBackground(maroon);
+		
+		homePage.setBackground(maroon);
+		
 		scroll = new JScrollPane(accGrid, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		
+		homePage.add(scroll, BorderLayout.CENTER);
+		
+		scroll.setBackground(maroon);
+		
+		scroll.getVerticalScrollBar().setBackground(new Color(230,208,99));
+		scroll.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+		    @Override
+		    protected void configureScrollBarColors() {
+		        this.thumbColor = new Color(102,0,0);
+		        
+		        
+		    }
+		});
+
+		scroll.setBorder(line);
 		
 		homePage.add(scroll, BorderLayout.CENTER);
 	}
@@ -128,6 +162,15 @@ public class UserSwing extends JComponent{
 		JButton deposit = new JButton("Deposit");
 		JButton withd = new JButton("Withdrawal");
 		JButton create = new JButton("Create Account");
+		
+		JButton[] buts = {transfer, deposit, withd, create};
+		
+		for (int a = 0; a < buts.length; a++) {
+			buts[a].setBackground(gold);
+			buts[a].setForeground(maroon);
+			buts[a].setFont(new Font(Font.SANS_SERIF, Font.CENTER_BASELINE, 15));
+			buts[a].setBorder(raisedbevel);
+		}
 		
 		JPanel transPan = new JPanel(new BorderLayout());
 		
@@ -246,9 +289,15 @@ public class UserSwing extends JComponent{
 		
 		optionGrid.setPreferredSize(new Dimension(150, 20));
 		
+		optionGrid.setBackground(maroon);
+		
+		homePage.setBackground(maroon);
+		
 		homePage.add(optionGrid, BorderLayout.EAST);
 
 		accGrid = new JPanel(new GridLayout());
+		
+		accGrid.setBackground(maroon);
 		
 		homePage.add(scroll, BorderLayout.WEST);
 		

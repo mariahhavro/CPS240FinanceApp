@@ -37,7 +37,12 @@ public class Menu extends JFrame {
 	JPasswordField loginPassword = new JPasswordField();
 	JTextField invalidLogin = new JTextField(7);
 	Border lineBorder = new LineBorder(new Color(252, 205, 53),5);
-	ImageIcon javaIcon = new ImageIcon("image/java.gif");
+	
+
+	String javaIc = new File("").getAbsolutePath() + "/src/Icon Folder/java.gif";
+	String update = javaIc.replace("\\","/");
+	
+	ImageIcon javaIcon = new ImageIcon(update);
 	JLabel logo = new JLabel(javaIcon);
 	JLabel logo2 = new JLabel(javaIcon);
 
@@ -53,7 +58,6 @@ public class Menu extends JFrame {
 		invalidLogin.setEditable(false);
 		invalidLogin.setForeground(Color.RED);
 		//set colors
-		
 
 		//create login page
 		JComponent loginPage = createLoginPage();
@@ -98,7 +102,9 @@ public class Menu extends JFrame {
 					currentUser = userFind(loginUserName.getText(), loginPassword.getText());
 					dm.curr = currentUser;
 					home.curr = currentUser;
+					slc.curr = currentUser;
 					home.setAccounts();
+					dm.card.first(dm.cardPanel);
 					menuTabbedPane.setSelectedIndex(0);
 					loginUserName.setText("");
 					loginPassword.setText("");
@@ -153,10 +159,16 @@ public class Menu extends JFrame {
 					// Change the current user to the new user profile
 					currentUser = newUser;
 					home.curr = currentUser;
+					//dm.curr = currentUser;
+					//slc.curr = currentUser;
 					home.setAccounts();
+					
+					
 					menuTabbedPane.setSelectedIndex(0);
 					//change to set name of card/panel added
-					menuCard.show(menuCardPanel, "Welcome");					
+					menuCard.show(menuCardPanel, "Welcome");	
+					
+					
 					
 				}
 				
@@ -401,8 +413,6 @@ public class Menu extends JFrame {
 
 			}
 		}
-
-		//System.out.println(curr.getUsername());
 
 		return curr;
 

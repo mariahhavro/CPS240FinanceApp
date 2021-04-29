@@ -16,7 +16,6 @@ public class User {
 	private ArrayList<Double> SavingCalculations;
 	
 	private ArrayList<Debt> debts; // to hold account debts that users have added
-	private ArrayList<Loan> loans;
 
 	/**
 	 * Default Constructor
@@ -28,7 +27,7 @@ public class User {
 		userLoans = new ArrayList<Loan>();
 		SavingCalculations = new ArrayList<Double>();
 		debts = new ArrayList<Debt>();
-		loans = new ArrayList<Loan>();
+		userLoans = new ArrayList<Loan>();
 	}
 	
 	/**
@@ -43,7 +42,7 @@ public class User {
 		userLoans = new ArrayList<Loan>();
 		SavingCalculations = new ArrayList<Double>();
 		debts = new ArrayList<Debt>();
-		loans = new ArrayList<Loan>();
+		userLoans = new ArrayList<Loan>();
 	}
 	
 	/**
@@ -59,24 +58,24 @@ public class User {
 		userLoans = new ArrayList<Loan>();
 		SavingCalculations = new ArrayList<Double>();
 		debts = new ArrayList<Debt>();
-		loans = new ArrayList<Loan>();
+		userLoans = new ArrayList<Loan>();
 	}
 	
 	public void addLoans(Loan l) {
-		loans.add(l);
+		userLoans.add(l);
 	}
 	
 	public void addLoans(String loanName, double loan, double years, double rate, double downPay, double monthlyPayment, double totalInterestAccrued) {
 		Loan l = new Loan(loanName, loan, years, rate, downPay, monthlyPayment, totalInterestAccrued);
-		loans.add(l);
+		userLoans.add(l);
 	}
 	
 	public ArrayList<Loan> getLoans(){
-		return loans;
+		return userLoans;
 	}
 	
 	public void setLoans(ArrayList<Loan> l) {
-		loans = l;
+		userLoans = l;
 	}
 	
 	public void addAccounts(String name, double balance) {
@@ -122,7 +121,7 @@ public class User {
 	 * Method for saving user files
 	 */
 	public void saveUserFile() {
-		
+
 		// Defining a string as the current directory the project is in
 		String currentDirectory = new File("").getAbsolutePath();
 		
@@ -147,6 +146,15 @@ public class User {
 				myWriter.write("\nd," + this.debts.get(i).name + "," + this.debts.get(i).presentValue + "," + this.debts.get(i).rate);
 				
 			}
+			for (int i = 0; i < this.userLoans.size(); i++) {
+				
+				// Write the information for each account in each subsequent line of the file
+				myWriter.write("\nl," + this.userLoans.get(i).getLoanName() + "," + this.userLoans.get(i).getLoan() + "," + this.userLoans.get(i).getYears() + "," + 
+						this.userLoans.get(i).getRate() + "," + this.userLoans.get(i).getDownPay() + "," + this.userLoans.get(i).getMonthlyPayment() + "," +
+						this.userLoans.get(i).getTotalInterestAccrued());
+				
+			}
+			
 			
 			// Close the writing of the file
 			myWriter.close();

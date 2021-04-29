@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -34,10 +35,13 @@ public class SwingLoanCalc extends JFrame implements ActionListener {
 
 	Font tnr = new Font("TimesNewRoman", 20, 20);
 
+	String direct = new File("").getAbsolutePath() + "/src/Icon Folder/";
+	String iconFolder = direct.replace("\\","/");
+	
 //icons downloaded from icons8.com
-	Icon home = new ImageIcon("icons8-home-128.png");
-	Icon pen = new ImageIcon("icons8-pencil-96.png");
-	Icon budget = new ImageIcon("icons8-money-96.png");
+	Icon home = new ImageIcon(iconFolder + "/icons8-home-128.png");
+	Icon pen = new ImageIcon(iconFolder + "icons8-pencil-96.png");
+	Icon budget = new ImageIcon(iconFolder + "icons8-money-96.png");
 
 // Calc menu JComponents
 	CardLayout calcCard = new CardLayout();
@@ -65,7 +69,6 @@ public class SwingLoanCalc extends JFrame implements ActionListener {
 	JButton bBudget = new JButton(budget);
 
 //Private Loan Calculator JComponents and Global Variables
-	ArrayList<Loan> loans = new ArrayList<Loan>();
 	JPanel bpanelPrivLoan, tpanelPrivLoan, spanelPrivLoan;
 	JLabel loanLabel, yearsLabel, rateLabel, downPayLabel, downPayLabel2, monthlyPayLabel, accruedInterestLabel,
 			errorLabel, saveLabel;
@@ -74,6 +77,7 @@ public class SwingLoanCalc extends JFrame implements ActionListener {
 	private double loan, years, rate, downPay;
 	private String loanName;
 	static User curr = new User();
+	ArrayList<Loan> loans = curr.getLoans();
 
 //View/Edit Loans JComponents and Global Variables
 	JPanel panelEditLoan, tpanelEditLoan, bpanelEditLoan, tpanelViewLoan, bpanelViewLoan;
@@ -131,6 +135,8 @@ public class SwingLoanCalc extends JFrame implements ActionListener {
 		panelCont.add(panelViewCont, "3");
 		panelCont.add(panelBudget, "4");
 		calcCard.show(panelCont, "1");
+		
+		JTextArea jtaViewLoan = new JTextArea("");
 
 		bPrivLoan.addActionListener(new ActionListener() {
 			@Override
@@ -141,6 +147,16 @@ public class SwingLoanCalc extends JFrame implements ActionListener {
 		bViewLoan.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				
+				jtaViewLoan.setText("");
+				
+				loans = curr.getLoans();
+				
+				for (int i = 0; i < loans.size(); i++) {
+					jtaViewLoan.append(loans.get(i).toString() + "\n");
+				}
+				
+				
 				calcCard.show(panelCont, "3");
 			}
 		});
@@ -158,7 +174,6 @@ public class SwingLoanCalc extends JFrame implements ActionListener {
 		// panelPrivLoan || JPanel || BorderLayout()
 		JPanel tpanelPrivLoan = new JPanel(new GridLayout(0, 2, 30, 30));
 		JPanel bpanelPrivLoan = new JPanel(new GridLayout(0, 2, 30, 10));
-		JTextArea jtaViewLoan = new JTextArea();
 
 		// Loan label and text field
 		loanLabel = new JLabel("Loan Amount");
@@ -530,6 +545,9 @@ public class SwingLoanCalc extends JFrame implements ActionListener {
 		// calcMenu Button
 		JButton bViewMenu = new JButton("View Loans");
 		bViewMenu.addActionListener(e -> {
+
+			loans = curr.getLoans();
+
 			vedCard.show(panelViewCont, "View");
 		});
 

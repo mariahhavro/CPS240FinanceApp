@@ -450,6 +450,7 @@ public class DebtManagement extends JFrame {
 		cardPanel.add(debtPaymentsPanel, "Debt Payments");
 		cardPanel.add(addDebtPanel, "Add Debt");
 		cardPanel.add(editDeleteDebtPanel, "Edit/Delete Debt");
+		
 
 		// add to frame
 /*		add(cardPanel);
