@@ -1,0 +1,12 @@
+cps240,12345678
+a,Checking,1000038,600.75
+a,Saving,1000045,665.0
+a,College Saving,1000021,42400.0
+a,Retirement,10000001,2000.0
+a,Vacation,10000002,1500.0
+a,Dream House,6351579,0.0
+d,Bank of America,1350.0,1.05
+d,Chase Mortage,124000.0,1.14
+d,Mafia Debt,12345.0,2.3
+l,House Mortage,150000.0,15.0,1.15,15000.0,300.0,1.2
+l,Car Loan,60000.0,15.0,1.2,100.0,70.0,0.0
